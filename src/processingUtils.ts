@@ -1,10 +1,9 @@
 import { parse } from 'date-fns'
 import Papa from 'papaparse'
-import { AppState } from '../components/AppContext'
-import { OrcaCSVOutput, ProcessedOrcaData } from '../types'
+import { AppState } from './components/AppContext'
+import { OrcaCSVOutput, ProcessedOrcaData, ExtraDataType } from './types'
 import { routeOccurrences } from './basicStats'
 import { dollarStringToNumber, parseActivity } from './propertyTransformations'
-import type { ExtraDataType } from '../types'
 
 async function parseFile (file: File): Promise<OrcaCSVOutput> {
   return await new Promise((resolve, reject) => {

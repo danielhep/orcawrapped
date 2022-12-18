@@ -11,5 +11,6 @@ export const AppContext = createContext< [AppState, Dispatch<SetStateAction<AppS
 )
 
 export function useAppState (): [AppState, Dispatch<SetStateAction<AppState>>] {
-  return useContext(AppContext)
+  const appContext = useContext(AppContext)
+  return appContext
 }

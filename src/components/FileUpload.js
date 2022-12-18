@@ -5,6 +5,7 @@ export default function FileUpload ({ onFilesChange, files }) {
   const updateFiles = (incommingFiles) => {
     onFilesChange(incommingFiles)
   }
+
   return (
     <>
       <Box sx={{ my: 4 }}>

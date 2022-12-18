@@ -1,4 +1,4 @@
-import { ActivityType } from '../types'
+import { ActivityType } from './types'
 
 /* eslint-disable no-unused-vars */
 export function dollarStringToNumber (val: string): number {

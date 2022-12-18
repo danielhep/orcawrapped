@@ -1,9 +1,16 @@
-import { Box, Container } from '@mui/material'
+import { MasonryGrid } from '@egjs/react-grid'
+import { Container } from '@mui/material'
+import { useAppState } from '../src/components/AppContext'
+import allStories from '../src/stories'
 
 export default function Wrapped (): JSX.Element {
+  const [appState] = useAppState()
+  const shownStories = allStories.filter(s => s.test(appState))
   return (
     <Container>
-      <Box sx={{ width: 1080, height: 1920, background: 'black' }}>test</Box>
+      <MasonryGrid>
+        {shownStories.map(S => <S state={appState} key={S.storyName} />)}
+      </MasonryGrid>
     </Container>
   )
 }
