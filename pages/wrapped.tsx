@@ -1,4 +1,4 @@
-import { MasonryGrid } from '@egjs/react-grid'
+import { JustifiedGrid } from '@egjs/react-grid'
 import { Container } from '@mui/material'
 import { useAppState } from '../src/components/AppContext'
 import allStories from '../src/stories'
@@ -8,9 +8,9 @@ export default function Wrapped (): JSX.Element {
   const shownStories = allStories.filter(s => s.test(appState))
   return (
     <Container>
-      <MasonryGrid>
+      <JustifiedGrid gap={15} columnRange={[1, 4]}>
         {shownStories.map(S => <S state={appState} key={S.storyName} />)}
-      </MasonryGrid>
+      </JustifiedGrid>
     </Container>
   )
 }

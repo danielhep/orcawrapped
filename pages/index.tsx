@@ -21,6 +21,8 @@ export default function Home (): JSX.Element {
     if (files.length > 0) { void process() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files])
+  console.log(!appState?.processed)
+  console.log(appState?.processed)
 
   return (
     <>
@@ -46,7 +48,7 @@ export default function Home (): JSX.Element {
               color='success'
               variant='contained'
               endIcon={<ArrowForward />}
-              disabled={!appState?.processed}
+              disabled={!appState}
               onClick={() => { void router.push('/wrapped') }}
             >
               View ORCA Wrapped
