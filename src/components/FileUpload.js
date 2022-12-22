@@ -9,7 +9,7 @@ export default function FileUpload ({ onFilesChange, files }) {
   return (
     <>
       <Box sx={{ my: 4 }}>
-        <Dropzone onChange={updateFiles} value={files} accept='.csv'>
+        <Dropzone onChange={onFilesChange} value={files} accept='.csv'>
           {files.map((file) => (
             <FileItem {...file} key={file.id} preview />
           ))}

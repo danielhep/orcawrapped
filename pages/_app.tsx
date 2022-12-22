@@ -3,7 +3,7 @@ import '../styles/globals.css'
 import { Roboto_Flex } from '@next/font/google'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { AppContext, AppState } from '../src/components/AppContext'
-import { useLocalStorageState } from 'ahooks'
+import useLocalStorageState from 'use-local-storage-state'
 
 const roboto = Roboto_Flex({ subsets: ['latin'], variable: '--roboto-flex' })
 

@@ -10,5 +10,5 @@ export function routeOccurrences (data: ProcessedOrcaData[]): Array<{ line: stri
     return prev
   }, {})
 
-  return Object.keys(lineRecord).map(line => ({ line, count: lineRecord[line] })).sort((a, b) => a.count - b.count)
+  return Object.keys(lineRecord).map(line => ({ line, count: lineRecord[line] })).sort((a, b) => b.count - a.count)
 }
