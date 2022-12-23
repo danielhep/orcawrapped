@@ -30,7 +30,7 @@ export interface ProcessedOrcaData {
   time: Date
   line?: string
   stop?: string
-  routeNumber?: string
+  routeShortName?: string
   agency: string
   activity: ActivityType
 }

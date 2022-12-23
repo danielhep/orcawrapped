@@ -26,7 +26,7 @@ async function processAllRows (rows: OrcaCSVOutput): Promise<ProcessedOrcaData[]
       time: parse(`${row.Date} ${row.Time}`, 'M/d/yyyy h:mmaa', new Date()),
       line: lineMatch?.[1],
       stop: stopMatch?.[1],
-      routeNumber: routeNumberMatch?.[0],
+      routeShortName: routeNumberMatch?.[0],
       agency: row.Agency,
       activity: parseActivity(row.Activity)
     }

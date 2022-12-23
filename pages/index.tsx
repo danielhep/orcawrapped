@@ -52,8 +52,6 @@ export default function Home (): JSX.Element {
             >
               View ORCA Wrapped
             </Button>
-            {String(!appState)}{' '}
-            {Object.keys(appState || {})}
           </Box>
         </Container>
       </Box>

@@ -23,7 +23,8 @@ function MyApp ({ Component, pageProps }): JSX.Element {
       className={roboto.variable} style={{
         display: 'flex',
         flexDirection: 'column',
-        flex: '1 1 auto'
+        flex: '1 1 auto',
+        background: 'black'
       }}
     >
       <ThemeProvider theme={theme}>
