@@ -1,10 +1,6 @@
 {
-  "extends": ["next/core-web-vitals", "standard-with-typescript", "standard-jsx"],
+  "extends": ["next/core-web-vitals"],
   "parserOptions": {
     "project": "./tsconfig.json"
-  },
-  "rules": {
-    "@typescript-eslint/strict-boolean-expressions": 0,
-    "max-len": ["error", {"code": 80}]
   }
 }
