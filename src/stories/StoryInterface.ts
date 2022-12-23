@@ -1,7 +1,7 @@
-import type { AppState } from './../components/AppContext'
+import type { AppState } from "./../components/AppContext";
 
 export interface TransitStory {
-  storyName: string
-  test: (state: AppState) => boolean
-  ({ state }: { state: AppState }): JSX.Element
+  storyName: string;
+  test: (state: AppState) => boolean;
+  ({ state }: { state: AppState }): JSX.Element;
 }

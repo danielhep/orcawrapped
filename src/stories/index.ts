@@ -1,5 +1,5 @@
-import { TransitStory } from './StoryInterface'
-import FavoriteRoutes from './favoriteRoutes'
+import { TransitStory } from "./StoryInterface";
+import FavoriteRoutes from "./favoriteRoutes";
 
 const allStories: TransitStory[] = [
   FavoriteRoutes,
@@ -8,7 +8,7 @@ const allStories: TransitStory[] = [
   FavoriteRoutes,
   FavoriteRoutes,
   FavoriteRoutes,
-  FavoriteRoutes
-]
+  FavoriteRoutes,
+];
 
-export default allStories
+export default allStories;

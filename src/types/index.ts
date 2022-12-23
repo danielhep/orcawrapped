@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 export interface OrcaCSVRow {
-  '+/-': string
-  Activity: string
-  Agency: string
-  Balance: string
-  Date: string
-  Location: string
-  Time: string
+  "+/-": string;
+  Activity: string;
+  Agency: string;
+  Balance: string;
+  Date: string;
+  Location: string;
+  Time: string;
 }
 
-export type OrcaCSVOutput = OrcaCSVRow[]
+export type OrcaCSVOutput = OrcaCSVRow[];
 
 export enum ActivityType {
   TAP_OFF,
@@ -21,20 +21,20 @@ export enum ActivityType {
   CARD_SALE,
   INSPECTION,
   USE,
-  UNKNOWN
+  UNKNOWN,
 }
 
 export interface ProcessedOrcaData {
-  cost: number
-  balance: number
-  time: Date
-  line?: string
-  stop?: string
-  routeShortName?: string
-  agency: string
-  activity: ActivityType
+  cost: number;
+  balance: number;
+  time: Date;
+  line?: string;
+  stop?: string;
+  routeShortName?: string;
+  agency: string;
+  activity: ActivityType;
 }
 
 export interface ExtraDataType {
-  routeOccurrences: Array<{ line: string, count: number }>
+  routeOccurrences: Array<{ line: string; count: number }>;
 }
