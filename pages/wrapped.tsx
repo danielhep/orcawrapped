@@ -14,8 +14,8 @@ export default function Wrapped(): JSX.Element {
     <Container>
       <div ref={newRef}>
         <JustifiedGrid gap={30} columnRange={[1, 4]}>
-          {shownStories.map((S) => (
-            <S state={appState} key={S.storyName} />
+          {shownStories.map((S, index) => (
+            <S state={appState} key={`${S.storyName}-${index}`} />
           ))}
         </JustifiedGrid>
       </div>
