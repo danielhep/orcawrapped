@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@bugsnag/js": "^7.18.0",
@@ -58,6 +59,11 @@
     "@types/node": "18.11.13",
     "babel-loader": "^8.3.0",
     "eslint-plugin-storybook": "^0.6.8",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
     "prettier": "2.8.1"
+  },
+  "lint-staged": {
+    "*.{js,css,md,jsx,tsx,ts}": "prettier --write"
   }
 }
