@@ -1,3 +1,8 @@
+export interface AppState {
+  processed: ProcessedOrcaData[];
+  extraData?: ExtraDataType;
+}
+
 /* eslint-disable no-unused-vars */
 export interface OrcaCSVRow {
   "+/-": string;
@@ -39,7 +44,13 @@ export interface ExtraDataType {
   routeOccurrences: Array<{
     line: string;
     count: number;
-    agency: string;
+    agencyName: string;
     routeShortName?: string;
   }>;
+}
+
+export interface WrappedCard {
+  cardName: string;
+  test: (state: AppState) => boolean;
+  ({ state }: { state: AppState }): JSX.Element;
 }

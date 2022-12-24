@@ -4,8 +4,7 @@ import { ParentSize } from "@visx/responsive";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
 import React from "react";
-import { AppState } from "../components/AppContext";
-import { TransitStory } from "./StoryInterface";
+import { AppState, WrappedCard } from "../types";
 
 function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
   const data = state?.extraData?.routeOccurrences.slice(0, 5) ?? [];
@@ -99,7 +98,7 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
   );
 }
 
-FavoriteRoutes.storyName = "Favorite Routes";
+FavoriteRoutes.cardName = "Favorite Routes";
 FavoriteRoutes.test = () => true;
 
-export default FavoriteRoutes as TransitStory;
+export default FavoriteRoutes as WrappedCard;
