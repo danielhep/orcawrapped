@@ -67,9 +67,10 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                 {data.map((line, i) => {
                   const barWidth = xScale(line.count);
                   const barHeight = yScale.bandwidth();
-                  const barY = yScale(
-                    `${line.line ?? "unknown"}-${line.agencyName}`
-                  );
+                  const barY =
+                    (yScale(`${line.line ?? "unknown"}-${line.agencyName}`) ??
+                      0) -
+                    barHeight / 2;
                   return (
                     <React.Fragment
                       key={`${line.line ?? "unknown"}-${line.agencyName}`}
