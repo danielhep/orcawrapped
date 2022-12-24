@@ -1,5 +1,5 @@
 import { WrappedCard } from "../types";
-import FavoriteRoutes from "./favoriteRoutes";
+import FavoriteRoutes from "./TopRoutes";
 
 const allStories: WrappedCard[] = [
   FavoriteRoutes,

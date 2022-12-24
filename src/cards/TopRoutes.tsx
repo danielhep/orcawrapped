@@ -98,7 +98,7 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
   );
 }
 
-FavoriteRoutes.cardName = "Favorite Routes";
+FavoriteRoutes.cardName = "Top Routes";
 FavoriteRoutes.test = () => true;
 
 export default FavoriteRoutes as WrappedCard;

@@ -16,6 +16,10 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }): JSX.Element {
   const [appState, setAppState] = useLocalStorageState<AppState>("appState");
+  const setWithConsole = (state: AppState) => {
+    console.log(JSON.stringify(state));
+    setAppState(state);
+  };
   return (
     <div
       className={roboto.variable}
@@ -27,7 +31,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
       }}
     >
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={[appState, setAppState]}>
+        <AppContext.Provider value={[appState, setWithConsole]}>
           <Component {...pageProps} />
         </AppContext.Provider>
       </ThemeProvider>
