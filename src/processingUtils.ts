@@ -4,6 +4,7 @@ import { AppState } from "./components/AppContext";
 import { OrcaCSVOutput, ProcessedOrcaData, ExtraDataType } from "./types";
 import { routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
+import { findTripsFromTaps } from "./findTripsFromTaps";
 
 async function parseFile(file: File): Promise<OrcaCSVOutput> {
   return await new Promise((resolve, reject) => {
@@ -31,14 +32,21 @@ async function processAllRows(
       routeShortName: routeNumberMatch?.[0],
       agency: row.Agency,
       activity: parseActivity(row.Activity),
+      declined: row.Activity.toLowerCase().includes("declined"),
     };
   });
 }
 
 function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
+  const trips = findTripsFromTaps(data)
   return {
-    routeOccurrences: routeOccurrences(data),
-  };
+    routeOccurrences: routeOccurrences(trips.map(t => t.boarding)),
+    trips: trips,
+    tapOffBehavior: {
+      expected: trips.filter(t => t.expectsTapOff).length,
+      missing: trips.filter(t => t.isMissingTapOff).length
+    },
+  }
 }
 
 export async function parseOrcaFiles(files: File[]): Promise<AppState> {
