@@ -37,11 +37,16 @@ export interface ProcessedOrcaData {
 }
 
 export interface ExtraDataType {
-  routeOccurrences: Array<{ line: string|undefined, count: number, agencyName: string }>;
-  trips: OrcaTrip[],
+  routeOccurrences: Array<{
+    line: string|undefined;
+    count: number;
+    agencyName: string;
+    routeShortName?: string;
+  }>;
+  trips: OrcaTrip[];
   tapOffBehavior: {
-    expected: Number,
-    missing: Number, 
+    expected: Number;
+    missing: Number;
   }
 }
 
