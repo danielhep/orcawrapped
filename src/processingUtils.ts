@@ -1,10 +1,12 @@
 import { parse } from "date-fns";
 import Papa from "papaparse";
+import Bugsnag from "@bugsnag/js";
 import {
   OrcaCSVOutput,
   ProcessedOrcaData,
   ExtraDataType,
   AppState,
+  ActivityType,
 } from "./types";
 import { routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
@@ -38,6 +40,8 @@ function lineToRouteShortName(string?: string): string | undefined {
       return "513";
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
+    case "Bremerton-Seattle Fast Ferry":
+      return "FF";
   }
 }
 
@@ -78,10 +82,27 @@ function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
   };
 }
 
+function findProblematicData(processed: ProcessedOrcaData[]) {
+  // Find rows of processed data which do not have a populated routeShortName
+  processed.forEach((row) => {
+    if (
+      !row.routeShortName &&
+      (row.activity === ActivityType.BOARDING ||
+        row.activity === ActivityType.TRANSFER)
+    ) {
+      Bugsnag.notify(new Error("missing routeShortName"), (e) =>
+        e.addMetadata("row", row)
+      );
+    }
+  });
+}
+
 export async function parseOrcaFiles(files: File[]): Promise<AppState> {
   const allPromii = await Promise.all(files.map(parseFile));
   const processed = await processAllRows(allPromii[0]);
   const extraData = generateExtraDataObject(processed);
+
+  findProblematicData(processed);
 
   return { processed, extraData };
 }

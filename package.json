@@ -11,6 +11,8 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@bugsnag/js": "^7.18.0",
+    "@bugsnag/plugin-react": "^7.18.0",
     "@dropzone-ui/react": "^6.7.20",
     "@egjs/grid": "^1.11.1",
     "@egjs/react-grid": "^1.12.1",
