@@ -1,3 +1,8 @@
+export interface AppState {
+  processed: ProcessedOrcaData[];
+  extraData?: ExtraDataType;
+}
+
 /* eslint-disable no-unused-vars */
 export interface OrcaCSVRow {
   "+/-": string;
@@ -95,4 +100,10 @@ export class OrcaTrip {
   get charge(): Number {
     return this.boarding.cost + (this.alighting?.cost || 0);
   }
+}
+
+export interface WrappedCard {
+  cardName: string;
+  test: (state: AppState) => boolean;
+  ({ state }: { state: AppState }): JSX.Element;
 }

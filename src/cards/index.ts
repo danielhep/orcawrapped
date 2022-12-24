@@ -1,7 +1,7 @@
-import { TransitStory } from "./StoryInterface";
-import FavoriteRoutes from "./favoriteRoutes";
+import { WrappedCard } from "../types";
+import FavoriteRoutes from "./TopRoutes";
 
-const allStories: TransitStory[] = [
+const allStories: WrappedCard[] = [
   FavoriteRoutes,
   FavoriteRoutes,
   FavoriteRoutes,

@@ -2,8 +2,9 @@ import "../styles/globals.css";
 // eslint-disable-next-line camelcase
 import { Roboto_Flex } from "@next/font/google";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { AppContext, AppState } from "../src/components/AppContext";
+import { AppContext } from "../src/components/AppContext";
 import useLocalStorageState from "use-local-storage-state";
+import { AppState } from "../src/types";
 
 const roboto = Roboto_Flex({ subsets: ["latin"], variable: "--roboto-flex" });
 
@@ -15,6 +16,10 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }): JSX.Element {
   const [appState, setAppState] = useLocalStorageState<AppState>("appState");
+  const setWithConsole = (state: AppState) => {
+    console.log(JSON.stringify(state));
+    setAppState(state);
+  };
   return (
     <div
       className={roboto.variable}
@@ -26,7 +31,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
       }}
     >
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={[appState, setAppState]}>
+        <AppContext.Provider value={[appState, setWithConsole]}>
           <Component {...pageProps} />
         </AppContext.Provider>
       </ThemeProvider>

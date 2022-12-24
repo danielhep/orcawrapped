@@ -1,7 +1,11 @@
 import { parse } from "date-fns";
 import Papa from "papaparse";
-import { AppState } from "./components/AppContext";
-import { OrcaCSVOutput, ProcessedOrcaData, ExtraDataType } from "./types";
+import {
+  OrcaCSVOutput,
+  ProcessedOrcaData,
+  ExtraDataType,
+  AppState,
+} from "./types";
 import { routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
