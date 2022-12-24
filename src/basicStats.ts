@@ -2,7 +2,7 @@ import { ProcessedOrcaData } from "./types";
 
 export function routeOccurrences(
   data: ProcessedOrcaData[]
-): Array<{ line: string; count: number }> {
+): Array<{ line: string; count: number; routeShortName?: string }> {
   const lineRecord = data.reduce<Record<string, number>>((prev, cur) => {
     if (!cur.line) {
       return prev;
@@ -13,6 +13,10 @@ export function routeOccurrences(
   }, {});
 
   return Object.keys(lineRecord)
-    .map((line) => ({ line, count: lineRecord[line] }))
+    .map((line) => ({
+      line,
+      count: lineRecord[line],
+      routeShortName: data.find((l) => l.line === line)?.routeShortName,
+    }))
     .sort((a, b) => b.count - a.count);
 }

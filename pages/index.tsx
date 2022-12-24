@@ -23,7 +23,6 @@ export default function Home(): JSX.Element {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
-  console.log(!appState);
 
   return (
     <>
