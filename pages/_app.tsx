@@ -2,9 +2,20 @@ import "../styles/globals.css";
 // eslint-disable-next-line camelcase
 import { Roboto_Flex } from "@next/font/google";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { AppContext } from "../src/components/AppContext";
 import useLocalStorageState from "use-local-storage-state";
+import Bugsnag from "@bugsnag/js";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
+import React from "react";
+
 import { AppState } from "../src/types";
+import { AppContext } from "../src/components/AppContext";
+
+Bugsnag.start({
+  apiKey: "04e95878207d41d2da7c5d058cc3e3be",
+  plugins: [new BugsnagPluginReact()],
+});
+
+const ErrorBoundary = Bugsnag.getPlugin("react")?.createErrorBoundary(React);
 
 const roboto = Roboto_Flex({ subsets: ["latin"], variable: "--roboto-flex" });
 
@@ -32,7 +43,9 @@ function MyApp({ Component, pageProps }): JSX.Element {
     >
       <ThemeProvider theme={theme}>
         <AppContext.Provider value={[appState, setWithConsole]}>
-          <Component {...pageProps} />
+          <ErrorBoundary>
+            <Component {...pageProps} />
+          </ErrorBoundary>
         </AppContext.Provider>
       </ThemeProvider>
     </div>
