@@ -21,7 +21,7 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
         {(parent) => {
           const margin = 0.1 * parent.height;
           const yScale = scaleBand({
-            domain: data.map((d) => d.line),
+            domain: data.map((d) => `${d.line ?? "unknown"}-${d.agencyName}`),
             range: [margin, parent.height - margin],
             padding: 0,
             round: true,
@@ -66,11 +66,16 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                 {data.map((line, i) => {
                   const barWidth = xScale(line.count);
                   const barHeight = yScale.bandwidth();
-                  const barY = (yScale(line.line) ?? 0) - barHeight / 2;
+                  const barY =
+                    (yScale(`${line.line ?? "unknown"}-${line.agencyName}`) ??
+                      0) -
+                    barHeight / 2;
                   return (
-                    <React.Fragment key={line.line}>
+                    <React.Fragment
+                      key={`${line.line ?? "unknown"}-${line.agencyName}`}
+                    >
                       <Bar
-                        key={`bar-${line.line}`}
+                        key={`bar-${line.line ?? "unknown"}-${line.agencyName}`}
                         width={barWidth}
                         height={barHeight}
                         y={barY}
@@ -80,11 +85,13 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                       />
                       <text
                         dominantBaseline="middle"
-                        y={yScale(line.line)}
+                        y={yScale(
+                          `${line.line ?? "unknown"}-${line.agencyName}`
+                        )}
                         x={10}
                         style={{ fill: "white" }}
                       >
-                        {line.routeShortName}
+                        {line.routeShortName ?? "<Unknown>"}
                       </text>
                     </React.Fragment>
                   );

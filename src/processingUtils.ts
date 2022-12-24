@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
+import { findTripsFromTaps } from "./findTripsFromTaps";
 
 async function parseFile(file: File): Promise<OrcaCSVOutput> {
   return await new Promise((resolve, reject) => {
@@ -52,7 +53,7 @@ async function processAllRows(
     const routeShortName =
       routeNumberMatch?.[0] ?? lineToRouteShortName(lineMatch?.[1]);
     return {
-      cost: dollarStringToNumber(row["+/-"]),
+      cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
       balance: dollarStringToNumber(row.Balance),
       time: parse(`${row.Date} ${row.Time}`, "M/d/yyyy h:mmaa", new Date()),
       line: lineMatch?.[1],
@@ -60,13 +61,20 @@ async function processAllRows(
       routeShortName,
       agency: row.Agency,
       activity: parseActivity(row.Activity),
+      declined: row.Activity.toLowerCase().includes("declined"),
     };
   });
 }
 
 function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
+  const trips = findTripsFromTaps(data);
   return {
-    routeOccurrences: routeOccurrences(data),
+    routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
+    trips: trips,
+    tapOffBehavior: {
+      expected: trips.filter((t) => t.expectsTapOff).length,
+      missing: trips.filter((t) => t.isMissingTapOff).length,
+    },
   };
 }
 
