@@ -44,7 +44,7 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
               />
               <LinearGradient
                 id="barGradient"
-                from="#351CAB"
+                from="#000"
                 to="#621A61"
                 rotate="45"
               />
@@ -85,7 +85,7 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                         x={10}
                         style={{ fill: "white" }}
                       >
-                        {line.line}
+                        {line.routeShortName}
                       </text>
                     </React.Fragment>
                   );

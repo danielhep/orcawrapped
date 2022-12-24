@@ -36,5 +36,9 @@ export interface ProcessedOrcaData {
 }
 
 export interface ExtraDataType {
-  routeOccurrences: Array<{ line: string; count: number }>;
+  routeOccurrences: Array<{
+    line: string;
+    count: number;
+    routeShortName?: string;
+  }>;
 }
