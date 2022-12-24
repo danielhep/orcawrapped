@@ -24,7 +24,7 @@ async function processAllRows(
     const stopMatch = row.Location.match(/Stop: (.*)/);
     const routeNumberMatch = row.Location.match(/(\d+(-Line)?)|([A-F] Line)/);
     return {
-      cost: dollarStringToNumber(row["+/-"]),
+      cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
       balance: dollarStringToNumber(row.Balance),
       time: parse(`${row.Date} ${row.Time}`, "M/d/yyyy h:mmaa", new Date()),
       line: lineMatch?.[1],

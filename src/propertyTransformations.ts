@@ -2,7 +2,10 @@ import { ActivityType } from "./types";
 
 /* eslint-disable no-unused-vars */
 export function dollarStringToNumber(val: string): number {
-  return Number(val.split("$")[1]);
+  const split = val.split("$")
+  const amount = split[1]
+  const isNegative = split[0] == "-"
+  return Number(amount) * (isNegative ? -1 : 1);
 }
 
 export function parseActivity(activity: string): ActivityType {
