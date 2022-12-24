@@ -1,7 +1,7 @@
 import { ProcessedOrcaData } from "./types";
 
 export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
-  line: string|undefined;
+  line: string | undefined;
   count: number;
   agencyName: string;
   routeShortName?: string;
@@ -9,7 +9,7 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
   let countByAgencyThenRoute: {
     [key: string]: {
       [key: string]: {
-        line: string|undefined;
+        line: string | undefined;
         count: number;
         agencyName: string;
         routeShortName?: string;
@@ -17,8 +17,8 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
     };
   } = {};
 
-  data.forEach(row => {
-    const lineKey = row.line ?? "UNKNOWN_ROUTE"
+  data.forEach((row) => {
+    const lineKey = row.line ?? "UNKNOWN_ROUTE";
     if (!(row.agency in countByAgencyThenRoute)) {
       countByAgencyThenRoute[row.agency] = {};
     }

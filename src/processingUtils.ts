@@ -63,15 +63,15 @@ async function processAllRows(
 }
 
 function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
-  const trips = findTripsFromTaps(data)
+  const trips = findTripsFromTaps(data);
   return {
-    routeOccurrences: routeOccurrences(trips.map(t => t.boarding)),
+    routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
     trips: trips,
     tapOffBehavior: {
-      expected: trips.filter(t => t.expectsTapOff).length,
-      missing: trips.filter(t => t.isMissingTapOff).length
+      expected: trips.filter((t) => t.expectsTapOff).length,
+      missing: trips.filter((t) => t.isMissingTapOff).length,
     },
-  }
+  };
 }
 
 export async function parseOrcaFiles(files: File[]): Promise<AppState> {

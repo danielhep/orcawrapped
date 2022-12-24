@@ -38,7 +38,7 @@ export interface ProcessedOrcaData {
 
 export interface ExtraDataType {
   routeOccurrences: Array<{
-    line: string|undefined;
+    line: string | undefined;
     count: number;
     agencyName: string;
     routeShortName?: string;
@@ -47,7 +47,7 @@ export interface ExtraDataType {
   tapOffBehavior: {
     expected: Number;
     missing: Number;
-  }
+  };
 }
 
 /**
@@ -61,32 +61,38 @@ export class OrcaTrip {
   /** Any inspection events found to be related to this trip */
   inspections: ProcessedOrcaData[];
 
-  static routesExpectingTapOff : Array<string|undefined> = ["1-Line", "N Line", "S Line"]
+  static routesExpectingTapOff: Array<string | undefined> = [
+    "1-Line",
+    "N Line",
+    "S Line",
+  ];
 
   constructor(boarding: ProcessedOrcaData, alighting?: ProcessedOrcaData) {
-    this.boarding = boarding 
-    this.alighting = alighting
-    this.inspections = []
+    this.boarding = boarding;
+    this.alighting = alighting;
+    this.inspections = [];
   }
 
-  get expectsTapOff() : boolean {
-    return OrcaTrip.routesExpectingTapOff.includes(this.boarding.routeShortName)
-  }
-  
-  get isMissingTapOff() : boolean {
-    return this.expectsTapOff && this.alighting == null  
+  get expectsTapOff(): boolean {
+    return OrcaTrip.routesExpectingTapOff.includes(
+      this.boarding.routeShortName
+    );
   }
 
-  get wasInspected() : boolean {
-    return this.inspections.length > 0
+  get isMissingTapOff(): boolean {
+    return this.expectsTapOff && this.alighting == null;
   }
 
-  /** 
-   * The initial tap charges the maximum possible amount from that station, but the appropriate amount 
-   * gets "credited" when you tap off somewhere that isn't the maximum possible charge. 
+  get wasInspected(): boolean {
+    return this.inspections.length > 0;
+  }
+
+  /**
+   * The initial tap charges the maximum possible amount from that station, but the appropriate amount
+   * gets "credited" when you tap off somewhere that isn't the maximum possible charge.
    * Transfer credit and passes are factored in to the amount each tap is charged.
    */
-  get charge() : Number {
-    return this.boarding.cost + (this.alighting?.cost || 0)
+  get charge(): Number {
+    return this.boarding.cost + (this.alighting?.cost || 0);
   }
 }

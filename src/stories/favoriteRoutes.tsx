@@ -67,9 +67,13 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                 {data.map((line, i) => {
                   const barWidth = xScale(line.count);
                   const barHeight = yScale.bandwidth();
-                  const barY = (yScale(`${line.line ?? "unknown"}-${line.agencyName}`) ?? 0) - barHeight / 2;
+                  const barY = yScale(
+                    `${line.line ?? "unknown"}-${line.agencyName}`
+                  );
                   return (
-                    <React.Fragment key={`${line.line ?? "unknown"}-${line.agencyName}`}>
+                    <React.Fragment
+                      key={`${line.line ?? "unknown"}-${line.agencyName}`}
+                    >
                       <Bar
                         key={`bar-${line.line ?? "unknown"}-${line.agencyName}`}
                         width={barWidth}
@@ -81,7 +85,9 @@ function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
                       />
                       <text
                         dominantBaseline="middle"
-                        y={yScale(`${line.line ?? "unknown"}-${line.agencyName}`) ?? 0 - 55}
+                        y={yScale(
+                          `${line.line ?? "unknown"}-${line.agencyName}`
+                        )}
                         x={10}
                         style={{ fill: "white" }}
                       >
