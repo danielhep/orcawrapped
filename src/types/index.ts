@@ -39,6 +39,7 @@ export interface ExtraDataType {
   routeOccurrences: Array<{
     line: string;
     count: number;
+    agency: string;
     routeShortName?: string;
   }>;
 }
