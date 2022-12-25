@@ -32,7 +32,7 @@ function lineToRouteShortName(string?: string): string | undefined {
       return "560";
     case "Woodinville - Seattle":
       return "522";
-    case "First Hill Streetcar Streetcar":
+    case "First Hill Streetcar Streetcar: Pioneer Square - Capitol Hill":
       return "FH Streetcar";
     case "Gig Harbor - Seattle":
       return "595";
@@ -41,7 +41,7 @@ function lineToRouteShortName(string?: string): string | undefined {
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
     case "Bremerton-Seattle Fast Ferry":
-      return "FF";
+      return "Br-Se FF";
   }
 }
 

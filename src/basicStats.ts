@@ -7,7 +7,9 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
   routeShortName?: string;
 }> {
   let countByAgencyThenRoute: {
+    // Agency
     [key: string]: {
+      // Route
       [key: string]: {
         line: string | undefined;
         count: number;
