@@ -41,7 +41,13 @@ function lineToRouteShortName(string?: string): string | undefined {
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
     case "Bremerton-Seattle Fast Ferry":
-      return "Br-Se FF";
+      return "Br-Se Ferry";
+    case "Bremerton-Port Orchard Foot Ferry":
+      return "Br-PO Ferry";
+    case "Mukilteo - Clinton":
+      return "Mu-Cl";
+    case "Ash Way P&R - Seattle":
+      return "511";
   }
 }
 
