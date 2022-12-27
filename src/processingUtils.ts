@@ -7,6 +7,7 @@ import {
   ExtraDataType,
   AppState,
   ActivityType,
+  OrcaCSVRow,
 } from "./types";
 import { routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
@@ -23,31 +24,133 @@ async function parseFile(file: File): Promise<OrcaCSVOutput> {
 }
 
 function lineToRouteShortName(string?: string): string | undefined {
+  //many of the below are based on guesswork, ORCA has a lot of weird cases
   switch (string) {
-    case "Everett - Seattle":
-      return "512";
-    case "Lynnwood - Bellevue":
-      return "532";
-    case "Bellevue - Sea-Tac - W. Seattle":
-      return "560";
-    case "Woodinville - Seattle":
-      return "522";
+    //rail services
     case "First Hill Streetcar Streetcar: Pioneer Square - Capitol Hill":
       return "FH Streetcar";
-    case "Gig Harbor - Seattle":
-      return "595";
-    case "Seaway Transit Center - Seattle":
-      return "513";
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
-    case "Bremerton-Seattle Fast Ferry":
-      return "Br-Se Ferry";
-    case "Bremerton-Port Orchard Foot Ferry":
-      return "Br-PO Ferry";
-    case "Mukilteo - Clinton":
-      return "Mu-Cl";
+    //other
+    case "One City Center":
+      return "One City Center (Downtown Shuttle Service)";
+    //ST routes
+    case "Everett - Seattle":
+      return "510/512"; //if ambiguity is addressed and old records not updated, need to version this by tap date
     case "Ash Way P&R - Seattle":
+    case "Ash Way P&R - Northgate Station": //future-proofing
       return "511";
+    case "Everett - Northgate Station": //future-proofing
+      return "512";
+    case "Seaway Transit Center - Seattle":
+    case "Seaway Transit Center - Northgate Station": //future-proofing
+      return "513";
+    case "Woodinville - Seattle":
+    case "Woodinville - Roosevelt Link Station": //future-proofing
+      return "522";
+    case "Everett - Bellevue":
+      return "532";
+    case "Lynnwood - Bellevue":
+      return "535";
+    case "Redmond - University District":
+      return "542";
+    case "Redmond - Seattle":
+      return "545";
+    case "Bellevue - Seattle":
+      return "550";
+    case "Issaquah - Seattle":
+      return "554";
+    case "Issaquah-University District":
+      return "556";
+    case "Bellevue - Sea-Tac - W. Seattle":
+      return "560";
+    case "Auburn - Redmond": //566 taken over by KCM March 22 under this name, unclear which may be in ORCA
+    case "Auburn - Overlake":
+      return "566";
+    case "Lakewood - SeaTac":
+      return "574";
+    case "Federal Way - Seattle":
+      return "577";
+    case "Puyallup - Seattle":
+      return "578";
+    case "Lakewood - Puyallup": //for some reason, all three of these have been picked up by Pantograph
+    case "Lakewood / Puyallup":
+    case "Lakewood to Puyallup":
+      return "580";
+    case "Tacoma - U. District":
+      return "586";
+    case "Tacoma - Seattle":
+      return "590";
+    case "Olympia/DuPont - Seattle":
+      return "592";
+    case "Lakewood - Seattle":
+      return "594";
+    case "Gig Harbor - Seattle":
+      return "595";
+    case "Bonney Lake - Sumner":
+      return "596";
+  }
+}
+
+/**
+ * Returns the first three characters of each word in the string joined by a `-`, sorted alphabetically,
+ * with the suffix "Ferry" added on.
+ * e.g. `Mukilteo - Clinton` and `Clinton - Mukilteo` both become `Cli-Muk Ferry`.
+ */
+function getWSFRoute(string: string): string | undefined {
+  const abbreviated = string.match(/(?<=\b)[A-HJ-Z]\w{0,2}/g)?.sort();
+  const shortened = abbreviated?.join("-");
+  return shortened ? shortened + " Ferry" : undefined;
+}
+
+/**
+ * Returns first two characters of each destination, unless it's multiple words (e.g. Port Orchard),
+ * in which case it's abbreviated, preserving ferry type.
+ * e.g. `Bremerton-Port Orchard Foot Ferry` becomes `Br-PO Foot Ferry`.
+ */
+function getKitsapFerryRoute(string: string): string | undefined {
+  const nameParts = string.match(/(.+) (Fast|Foot) Ferry/);
+  const name = nameParts?.[1];
+  const type = nameParts?.[2];
+  if (name && type) {
+    const locations = name
+      .split("-")
+      .map((p) => p.trim())
+      .map((p) => {
+        if (p.includes(" ")) {
+          return p.match(/(?<=\b)\w/g)?.join("") ?? p;
+        } else {
+          return p.substring(0, 2);
+        }
+      });
+    return locations.join("-") + ` ${type} Ferry`;
+  }
+}
+
+/**
+ * Main method for getting a user-facing route name from an ORCA record.
+ */
+function getIdealRouteShortName(
+  row: OrcaCSVRow,
+  lineMatch: RegExpMatchArray | null
+): string | undefined {
+  const matchedInfo = lineMatch?.[1]?.trim();
+  if (matchedInfo) {
+    const routeNumberMatch = matchedInfo.match(
+      /(Swift \w+)|(\w+[\s-]Line)|\d+/
+    );
+    if (routeNumberMatch != null) {
+      return routeNumberMatch[0];
+    } else if (row.Agency == "Washington State Ferries") {
+      return getWSFRoute(matchedInfo);
+    } else if (
+      row.Agency == "Kitsap Transit" &&
+      matchedInfo.toLowerCase().includes("ferry")
+    ) {
+      return getKitsapFerryRoute(matchedInfo);
+    } else {
+      return lineToRouteShortName(matchedInfo);
+    }
   }
 }
 
@@ -57,11 +160,7 @@ async function processAllRows(
   return rows.map((row) => {
     const lineMatch = row.Location.match(/Line: ([^,]*)/);
     const stopMatch = row.Location.match(/Stop: (.*)/);
-    const routeNumberMatch = lineMatch?.[1].match(
-      /(Swift (Blue|Green))|(\d-Line)|(\D Line)|\d+/
-    );
-    const routeShortName =
-      routeNumberMatch?.[0] ?? lineToRouteShortName(lineMatch?.[1]);
+    const routeShortName = getIdealRouteShortName(row, lineMatch);
     return {
       cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
       balance: dollarStringToNumber(row.Balance),
