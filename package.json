@@ -27,11 +27,11 @@
     "@mui/material": "^5.10.17",
     "@next/font": "^13.0.6",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@visx/gradient": "^2.10.0",
-    "@visx/group": "^2.10.0",
-    "@visx/responsive": "^2.10.0",
-    "@visx/scale": "^2.2.2",
-    "@visx/shape": "^2.12.2",
+    "@visx/gradient": "^2.17.0",
+    "@visx/group": "^2.17.0",
+    "@visx/responsive": "^2.17.0",
+    "@visx/scale": "^2.17.0",
+    "@visx/shape": "^2.17.0",
     "ahooks": "^3.7.2",
     "axios": "^1.2.1",
     "date-fns": "^2.29.3",
@@ -66,5 +66,9 @@
   },
   "lint-staged": {
     "*.{js,css,md,jsx,tsx,ts}": "prettier --write"
+  },
+  "overrides": {
+    "d3-scale": "3.3.0",
+    "d3-interpolate": "1.4.0"
   }
 }
