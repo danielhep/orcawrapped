@@ -25,10 +25,6 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }): JSX.Element {
   const [appState, setAppState] = useLocalStorageState<AppState>("appState");
-  const setWithConsole = (state: AppState) => {
-    console.log(JSON.stringify(state));
-    setAppState(state);
-  };
   return (
     <div
       style={{
@@ -38,7 +34,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
       }}
     >
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={[appState, setWithConsole]}>
+        <AppContext.Provider value={[appState, setAppState]}>
           <ErrorBoundary>
             <Component {...pageProps} />
           </ErrorBoundary>

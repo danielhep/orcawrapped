@@ -40,9 +40,9 @@ function lineToRouteShortName(string?: string): string | undefined {
       return "513";
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
-    case "Bremerton-Seattle Fast Ferry":
+    case " Bremerton-Seattle Fast Ferry":
       return "Br-Se Ferry";
-    case "Bremerton-Port Orchard Foot Ferry":
+    case " Bremerton-Port Orchard Foot Ferry":
       return "Br-PO Ferry";
     case "Mukilteo - Clinton":
       return "Mu-Cl";
