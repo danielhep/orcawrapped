@@ -58,7 +58,7 @@ export default function Wrapped(): JSX.Element | null {
           of those were you!
         </BigText>
         <SmallerText>
-          Here's how you spent your time on transit in 2022.
+          Here{"'"}s how you spent your time on transit in 2022.
         </SmallerText>
       </Box>
       <JustifiedGrid gap={30} columnRange={[1, 4]}>
