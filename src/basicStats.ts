@@ -39,6 +39,7 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
     .flatMap((agencyName) => {
       return Object.values(countByAgencyThenRoute[agencyName]);
     })
+    .filter((d) => d.line)
     .sort((a, b) => b.count - a.count);
 
   return routeCounts;
