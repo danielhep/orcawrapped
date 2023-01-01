@@ -10,6 +10,7 @@ import React from "react";
 
 import { AppState } from "../src/types";
 import { AppContext } from "../src/components/AppContext";
+import RainBackground from "../src/components/RainBackground";
 
 Bugsnag.start({
   apiKey: "04e95878207d41d2da7c5d058cc3e3be",
@@ -34,6 +35,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
         flex: "1 1 auto",
       }}
     >
+      <RainBackground />
       <ThemeProvider theme={theme}>
         <AppContext.Provider value={[appState, setAppState]}>
           <ErrorBoundary>

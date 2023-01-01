@@ -61,11 +61,11 @@ export default function Wrapped(): JSX.Element | null {
           Here{"'"}s how you spent your time on transit in 2022.
         </SmallerText>
       </Box>
-      <JustifiedGrid gap={30} columnRange={[1, 4]}>
+      {/* <JustifiedGrid gap={30} columnRange={[1, 4]}>
         {shownStories.map((S, index) => (
           <S state={appState} key={`${S.cardName}-${index}`} />
         ))}
-      </JustifiedGrid>
+      </JustifiedGrid> */}
     </Container>
   );
 }
