@@ -5,17 +5,25 @@ import { css } from "@emotion/css";
 
 import allStories from "../src/cards";
 import styled from "@emotion/styled";
+import CountUp from "react-countup";
 
 const BigText = styled.p`
   color: white;
   font-weight: 700;
   font-size: 3em;
+  font-family: Arvo;
 `;
 
 const SmallerText = styled.p`
   color: white;
   font-weight: 500;
   font-size: 2em;
+`;
+
+const DramaticText = styled.span`
+  font-weight: 900;
+  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black,
+    3px 3px 0 red;
 `;
 
 export default function Wrapped(): JSX.Element | null {
@@ -27,19 +35,26 @@ export default function Wrapped(): JSX.Element | null {
     <Container>
       <Box>
         <BigText>
-          People made 1,000,000 trips on Puget Sound transit agencies in 2022.
+          Across the Puget Sound, people took
+          <br />
+          <DramaticText>
+            <CountUp
+              duration={1}
+              end={1402324}
+              formattingFn={(n) => n.toLocaleString()}
+            />
+          </DramaticText>{" "}
+          trips in 2022.
         </BigText>
         <BigText>
           At least{" "}
-          <span
-            className={css`
-              font-weight: 900;
-              text-shadow: 0 0 12px 12px red;
-              text-decoration: underline;
-            `}
-          >
-            {appState.extraData?.trips.length}
-          </span>{" "}
+          <DramaticText>
+            <CountUp
+              duration={1}
+              end={appState.extraData?.trips?.length}
+              formattingFn={(n) => n.toLocaleString()}
+            />
+          </DramaticText>{" "}
           of those were you!
         </BigText>
         <SmallerText>
