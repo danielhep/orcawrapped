@@ -31,11 +31,6 @@ function lineToRouteShortName(string?: string): string | undefined {
       return "FH Streetcar";
     case "Seattle Monorail Seattle Monorail":
       return "Monorail";
-    //kitsap ferries
-    case " Bremerton-Seattle Fast Ferry":
-      return "Br-Se Ferry";
-    case " Bremerton-Port Orchard Foot Ferry":
-      return "Br-PO Ferry";
     //other
     case "One City Center":
       return "One City Center (Downtown Shuttle Service)";
@@ -103,7 +98,7 @@ function lineToRouteShortName(string?: string): string | undefined {
  * e.g. `Mukilteo - Clinton` and `Clinton - Mukilteo` both become `Cli-Muk Ferry`.
  */
 function getWSFRoute(string: string): string | undefined {
-  const abbreviated = string.match(/(?<=\b)[A-HJ-Z]\w{0,2}/g)?.sort();
+  const abbreviated = string.match(/(\b)[A-HJ-Z]\w{0,2}/g)?.sort();
   const shortened = abbreviated?.join("-");
   return shortened ? shortened + " Ferry" : undefined;
 }
@@ -123,38 +118,35 @@ function getKitsapFerryRoute(string: string): string | undefined {
       .map((p) => p.trim())
       .map((p) => {
         if (p.includes(" ")) {
-          return p.match(/(?<=\b)\w/g)?.join("") ?? p;
+          return p.match(/(\b)\w/g)?.join("") ?? p;
         } else {
           return p.substring(0, 2);
         }
       });
-    return locations.join("-") + ` ${type} Ferry`;
+    return locations.join("-") + ` ${type} ⛴️`;
   }
 }
 
 /**
  * Main method for getting a user-facing route name from an ORCA record.
  */
-function getIdealRouteShortName(
+export function getIdealRouteShortName(
   row: OrcaCSVRow,
-  lineMatch: RegExpMatchArray | null
+  lineStr: string | undefined
 ): string | undefined {
-  const matchedInfo = lineMatch?.[1]?.trim();
-  if (matchedInfo) {
-    const routeNumberMatch = matchedInfo.match(
-      /(Swift \w+)|(\w+[\s-]Line)|\d+/
-    );
-    if (routeNumberMatch != null) {
+  if (lineStr) {
+    const routeNumberMatch = lineStr.match(/(Swift \w+)|(\w+[\s-]Line)|\d+/);
+    if (routeNumberMatch) {
       return routeNumberMatch[0];
     } else if (row.Agency == "Washington State Ferries") {
-      return getWSFRoute(matchedInfo);
+      return getWSFRoute(lineStr);
     } else if (
       row.Agency == "Kitsap Transit" &&
-      matchedInfo.toLowerCase().includes("ferry")
+      lineStr.toLowerCase().includes("ferry")
     ) {
-      return getKitsapFerryRoute(matchedInfo);
+      return getKitsapFerryRoute(lineStr);
     } else {
-      return lineToRouteShortName(matchedInfo);
+      return lineToRouteShortName(lineStr);
     }
   }
 }
@@ -163,15 +155,17 @@ async function processAllRows(
   rows: OrcaCSVOutput
 ): Promise<ProcessedOrcaData[]> {
   return rows.map((row) => {
-    const lineMatch = row.Location.match(/Line: ([^,]*)/);
-    const stopMatch = row.Location.match(/Stop: (.*)/);
-    const routeShortName = getIdealRouteShortName(row, lineMatch);
+    const lineStr = row.Location.match(/Line: ([^,]*)/)?.[1].trim();
+    const stopStr = row.Location.match(/Stop: (.*)/)?.[1].trim();
+    const routeShortName = getIdealRouteShortName(row, lineStr);
+
+    routeShortName || console.log(`${lineStr} to ${routeShortName}`);
     return {
       cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
       balance: dollarStringToNumber(row.Balance),
       time: parse(`${row.Date} ${row.Time}`, "M/d/yyyy h:mmaa", new Date()),
-      line: lineMatch?.[1],
-      stop: stopMatch?.[1],
+      line: lineStr,
+      stop: stopStr,
       routeShortName,
       agency: row.Agency,
       activity: parseActivity(row.Activity),
@@ -197,6 +191,7 @@ function findProblematicData(processed: ProcessedOrcaData[]) {
   processed.forEach((row) => {
     if (
       !row.routeShortName &&
+      row.line &&
       (row.activity === ActivityType.BOARDING ||
         row.activity === ActivityType.TRANSFER)
     ) {

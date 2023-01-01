@@ -51,7 +51,7 @@ export default function Wrapped(): JSX.Element | null {
           <DramaticText>
             <CountUp
               duration={1}
-              end={appState.extraData?.trips?.length}
+              end={appState.extraData?.trips?.length || 0}
               formattingFn={(n) => n.toLocaleString()}
             />
           </DramaticText>{" "}
