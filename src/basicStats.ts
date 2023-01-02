@@ -1,4 +1,4 @@
-import { ProcessedOrcaData } from "./types";
+import { LinkStats, OrcaTrip, ProcessedOrcaData } from "./types";
 
 export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
   line: string | undefined;
@@ -43,4 +43,23 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
     .sort((a, b) => b.count - a.count);
 
   return routeCounts;
+}
+
+export function linkStats(trips: OrcaTrip[]): LinkStats {
+  console.log(trips);
+  const linkTrips = trips.filter((t) => t.boarding.routeShortName === "1-Line");
+  const stationStats = linkTrips.reduce((prev, cur) => {
+    const stations = [cur.boarding.stop, cur.alighting?.stop];
+    stations.forEach((s) => {
+      if (s) {
+        if (prev[s] != undefined) {
+          prev[s]++;
+        } else {
+          prev[s] = 0;
+        }
+      }
+    });
+    return prev;
+  }, {});
+  return { stationStats, linkTrips };
 }

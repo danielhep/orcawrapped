@@ -9,7 +9,7 @@ import {
   ActivityType,
   OrcaCSVRow,
 } from "./types";
-import { routeOccurrences } from "./basicStats";
+import { linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 
@@ -159,7 +159,6 @@ async function processAllRows(
     const stopStr = row.Location.match(/Stop: (.*)/)?.[1].trim();
     const routeShortName = getIdealRouteShortName(row, lineStr);
 
-    routeShortName || console.log(`${lineStr} to ${routeShortName}`);
     return {
       cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
       balance: dollarStringToNumber(row.Balance),
@@ -183,6 +182,7 @@ function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
       expected: trips.filter((t) => t.expectsTapOff).length,
       missing: trips.filter((t) => t.isMissingTapOff).length,
     },
+    linkStats: linkStats(trips),
   };
 }
 

@@ -53,6 +53,12 @@ export interface ExtraDataType {
     expected: Number;
     missing: Number;
   };
+  linkStats: LinkStats;
+}
+
+export interface LinkStats {
+  stationStats: Record<string, number>;
+  linkTrips: OrcaTrip[];
 }
 
 /**
