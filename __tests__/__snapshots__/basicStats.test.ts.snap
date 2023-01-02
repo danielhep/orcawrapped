@@ -5533,24 +5533,78 @@ exports[`basicStats tests linkStats check linkTrips filtering 1`] = `
 `;
 
 exports[`basicStats tests linkStats check station stats 1`] = `
-{
-  "Beacon Hill Station": 4,
-  "Capitol Hill Station": 51,
-  "Columbia City Station": 6,
-  "Intl Dist/Chinatown Station": 10,
-  "Mount Baker Station": 2,
-  "Northgate Station": 43,
-  "Othello Station": 4,
-  "Pioneer Square Station": 2,
-  "Rainier Beach Station": 2,
-  "Roosevelt Station": 195,
-  "SODO Station": 3,
-  "SeaTac/Airport Station": 13,
-  "Stadium Station": 4,
-  "Tukwila Int'l Blvd Station": 2,
-  "U District Station": 48,
-  "Univ of Washington Station": 6,
-  "University St Station": 9,
-  "Westlake Station": 18,
-}
+[
+  {
+    "count": 195,
+    "station": "Roosevelt Station",
+  },
+  {
+    "count": 51,
+    "station": "Capitol Hill Station",
+  },
+  {
+    "count": 48,
+    "station": "U District Station",
+  },
+  {
+    "count": 43,
+    "station": "Northgate Station",
+  },
+  {
+    "count": 18,
+    "station": "Westlake Station",
+  },
+  {
+    "count": 13,
+    "station": "SeaTac/Airport Station",
+  },
+  {
+    "count": 10,
+    "station": "Intl Dist/Chinatown Station",
+  },
+  {
+    "count": 9,
+    "station": "University St Station",
+  },
+  {
+    "count": 6,
+    "station": "Univ of Washington Station",
+  },
+  {
+    "count": 6,
+    "station": "Columbia City Station",
+  },
+  {
+    "count": 4,
+    "station": "Stadium Station",
+  },
+  {
+    "count": 4,
+    "station": "Beacon Hill Station",
+  },
+  {
+    "count": 4,
+    "station": "Othello Station",
+  },
+  {
+    "count": 3,
+    "station": "SODO Station",
+  },
+  {
+    "count": 2,
+    "station": "Pioneer Square Station",
+  },
+  {
+    "count": 2,
+    "station": "Mount Baker Station",
+  },
+  {
+    "count": 2,
+    "station": "Tukwila Int'l Blvd Station",
+  },
+  {
+    "count": 2,
+    "station": "Rainier Beach Station",
+  },
+]
 `;

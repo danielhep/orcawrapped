@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
+import { Apps } from "@mui/icons-material";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import CountUp from "react-countup";
+import { AppState } from "../types";
+import { useAppState } from "./AppContext";
 
 const ScrollingText = styled(motion.p)`
   color: white;
@@ -15,6 +19,7 @@ const ScrollingText = styled(motion.p)`
 
 export default function Home1LineSection() {
   const mainRef = useRef(null);
+  const [appState] = useAppState();
 
   const { scrollYProgress } = useScroll({
     target: mainRef,
@@ -32,6 +37,12 @@ export default function Home1LineSection() {
     ["20%", "0%"]
   );
 
+  const linkTripsCount = appState?.extraData?.linkStats.linkTrips.length ?? 0;
+  const linkTripPercentage = Math.round(
+    (linkTripsCount / (appState?.extraData?.trips.length ?? 1)) * 100
+  );
+
+  if (!appState) return null;
   return (
     <Box
       sx={{
@@ -46,8 +57,9 @@ export default function Home1LineSection() {
         <Card sx={{ mx: 4 }}>
           <CardContent>
             <Typography variant="h5" component="div">
-              You made 2000 trips on Link, <br />
-              67% of all your trips.
+              You made <CountUp end={linkTripsCount ?? 0} /> trips on Link,{" "}
+              <br />
+              {linkTripPercentage}% of all your trips.
             </Typography>
           </CardContent>
         </Card>

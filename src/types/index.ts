@@ -57,7 +57,7 @@ export interface ExtraDataType {
 }
 
 export interface LinkStats {
-  stationStats: Record<string, number>;
+  stationStats: Array<{ station: string; count: number }>;
   linkTrips: OrcaTrip[];
 }
 

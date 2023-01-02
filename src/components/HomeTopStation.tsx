@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useAppState } from "./AppContext";
 
 const ScrollingText = styled(motion.p)`
   color: white;
@@ -15,6 +16,7 @@ const ScrollingText = styled(motion.p)`
 
 export default function HomeTopStation() {
   const mainRef = useRef(null);
+  const [appState] = useAppState();
 
   const { scrollYProgress } = useScroll({
     target: mainRef,
@@ -32,6 +34,11 @@ export default function HomeTopStation() {
     ["20%", "0%"]
   );
 
+  const stationStats = appState?.extraData?.linkStats.stationStats ?? [];
+  const totalBoops = stationStats.reduce((prev, cur) => prev + cur.count, 0);
+  const percentage = Math.round((stationStats[0].count / totalBoops) * 100);
+
+  if (!appState) return null;
   return (
     <Box
       sx={{
@@ -43,14 +50,17 @@ export default function HomeTopStation() {
       }}
     >
       <ScrollingText style={{ x: transformedXPos }} ref={mainRef}>
-        Next stop, Roosevelt. Doors to my left.
+        Next stop, {stationStats[0].station.split(" Station")[0]}. Doors to my
+        left.
       </ScrollingText>
       <motion.div style={{ opacity: cardOpacity, y: cardTransformY }}>
         <Card sx={{ mx: 4 }}>
           <CardContent>
             <Typography variant="h5" component="div">
-              87% of your trips on Link began
-              <br /> or ended at Roosevelt Station.
+              <>
+                {percentage}% of your trips on Link began
+                <br /> or ended at {stationStats[0].station}.
+              </>
             </Typography>
           </CardContent>
         </Card>

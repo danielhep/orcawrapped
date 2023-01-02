@@ -46,7 +46,6 @@ export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
 }
 
 export function linkStats(trips: OrcaTrip[]): LinkStats {
-  console.log(trips);
   const linkTrips = trips.filter((t) => t.boarding.routeShortName === "1-Line");
   const stationStats = linkTrips.reduce((prev, cur) => {
     const stations = [cur.boarding.stop, cur.alighting?.stop];
@@ -61,5 +60,12 @@ export function linkStats(trips: OrcaTrip[]): LinkStats {
     });
     return prev;
   }, {});
-  return { stationStats, linkTrips };
+  const stationStatsAsArray = Object.keys(stationStats)
+    .map((station) => ({
+      station,
+      count: stationStats[station],
+    }))
+    .sort((a, b) => b.count - a.count);
+
+  return { stationStats: stationStatsAsArray, linkTrips };
 }
