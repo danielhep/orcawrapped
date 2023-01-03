@@ -84,11 +84,13 @@ export default function Wrapped(): JSX.Element | null {
       <Home1LineSection />
       <HomeTopRoute />
 
-      <JustifiedGrid gap={30} columnRange={[1, 4]}>
-        {shownStories.map((S, index) => (
-          <S state={appState} key={`${S.cardName}-${index}`} />
-        ))}
-      </JustifiedGrid>
+      <Container>
+        <JustifiedGrid gap={30} columnRange={[1, 4]}>
+          {shownStories.map((S, index) => (
+            <S state={appState} key={`${S.cardName}-${index}`} />
+          ))}
+        </JustifiedGrid>
+      </Container>
     </>
   );
 }
