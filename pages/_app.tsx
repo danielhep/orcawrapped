@@ -38,9 +38,13 @@ function MyApp({ Component, pageProps }): JSX.Element {
       <RainBackground />
       <ThemeProvider theme={theme}>
         <AppContext.Provider value={[appState, setAppState]}>
-          <ErrorBoundary>
+          {ErrorBoundary ? (
+            <ErrorBoundary>
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          ) : (
             <Component {...pageProps} />
-          </ErrorBoundary>
+          )}
         </AppContext.Provider>
       </ThemeProvider>
     </div>
