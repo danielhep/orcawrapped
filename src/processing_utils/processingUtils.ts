@@ -8,7 +8,7 @@ import {
   AppState,
   ActivityType,
   OrcaCSVRow,
-} from "./types";
+} from "../types";
 import { linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";

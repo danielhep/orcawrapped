@@ -1,4 +1,4 @@
-import { getIdealRouteShortName } from "../src/processingUtils";
+import { getIdealRouteShortName } from "../src/processing_utils/processingUtils";
 import { OrcaCSVRow } from "../src/types";
 
 function testRouteShortNameGenerator(

@@ -1,4 +1,26 @@
-import { LinkStats, OrcaTrip, ProcessedOrcaData } from "./types";
+import { DoorSides, LinkStats, OrcaTrip, ProcessedOrcaData } from "../types";
+
+const LINK_DOOR_SIDE: Record<string, DoorSides> = {
+  northgate: "EITHER",
+  roosevelt: "LEFT",
+  "u district": "LEFT",
+  "univeristy of washington": "LEFT",
+  "capitol hill": "LEFT",
+  westlake: "RIGHT",
+  "university street": "RIGHT",
+  "pioneer square": "RIGHT",
+  "intl dist/chinatown": "RIGHT",
+  stadium: "LEFT",
+  sodo: "RIGHT",
+  "beacon hill": "LEFT",
+  "mount baker": "RIGHT",
+  "columbia city": "RIGHT",
+  othello: "RIGHT",
+  "rainier beach": "LEFT",
+  "tukwila int'l blvd": "RIGHT",
+  "seatac/airport": "LEFT",
+  "angle lake": "EITHER",
+};
 
 export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
   line: string | undefined;
@@ -64,6 +86,7 @@ export function linkStats(trips: OrcaTrip[]): LinkStats {
     .map((station) => ({
       station,
       count: stationStats[station],
+      doorSide: LINK_DOOR_SIDE[station.toLowerCase().split(" station")[0]],
     }))
     .sort((a, b) => b.count - a.count);
 

@@ -56,8 +56,14 @@ export interface ExtraDataType {
   linkStats: LinkStats;
 }
 
+export type DoorSides = "LEFT" | "RIGHT" | "EITHER";
+
 export interface LinkStats {
-  stationStats: Array<{ station: string; count: number }>;
+  stationStats: Array<{
+    station: string;
+    count: number;
+    doorSide: DoorSides;
+  }>;
   linkTrips: OrcaTrip[];
 }
 

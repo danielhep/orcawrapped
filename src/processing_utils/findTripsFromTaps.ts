@@ -1,4 +1,4 @@
-import { ProcessedOrcaData, OrcaTrip, ActivityType } from "./types";
+import { ProcessedOrcaData, OrcaTrip, ActivityType } from "../types";
 
 export function findTripsFromTaps(taps: ProcessedOrcaData[]): OrcaTrip[] {
   const boardingActivities = [ActivityType.BOARDING, ActivityType.TRANSFER];

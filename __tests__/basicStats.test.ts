@@ -1,4 +1,4 @@
-import { linkStats } from "../src/basicStats";
+import { linkStats } from "../src/processing_utils/basicStats";
 import tripsMock from "./mocks/trips.json";
 
 describe("basicStats tests", () => {

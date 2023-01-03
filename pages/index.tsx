@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAppState } from "../src/components/AppContext";
 import FileUpload from "../src/components/FileUpload";
-import { parseOrcaFiles } from "../src/processingUtils";
+import { parseOrcaFiles } from "../src/processing_utils/processingUtils";
 
 export default function Home(): JSX.Element {
   const [files, setFiles] = useState<FileValidated[]>([]);

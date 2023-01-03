@@ -38,6 +38,14 @@ export default function HomeTopStation() {
   const totalBoops = stationStats.reduce((prev, cur) => prev + cur.count, 0);
   const percentage = Math.round((stationStats[0].count / totalBoops) * 100);
 
+  console.log(stationStats[0]);
+  let doorSideText = "";
+  if (stationStats[0].doorSide === "LEFT") {
+    doorSideText = "left";
+  } else if (stationStats[0].doorSide === "RIGHT") {
+    doorSideText = "right";
+  }
+
   if (!appState) return null;
   return (
     <Box
@@ -50,8 +58,10 @@ export default function HomeTopStation() {
       }}
     >
       <ScrollingText style={{ x: transformedXPos }} ref={mainRef}>
-        Next stop, {stationStats[0].station.split(" Station")[0]}. Doors to my
-        left.
+        Next stop, {stationStats[0].station.split(" Station")[0]}.
+        {doorSideText !== "" &&
+          ` Doors to my
+        ${doorSideText}.`}
       </ScrollingText>
       <motion.div style={{ opacity: cardOpacity, y: cardTransformY }}>
         <Card sx={{ mx: 4 }}>
