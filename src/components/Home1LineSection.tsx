@@ -6,6 +6,7 @@ import { useRef } from "react";
 import CountUp from "react-countup";
 import { AppState } from "../types";
 import { useAppState } from "./AppContext";
+import FloatingCard from "./ui/FloatingCard";
 
 const ScrollingText = styled(motion.p)`
   color: white;
@@ -54,15 +55,10 @@ export default function Home1LineSection() {
       }}
     >
       <motion.div style={{ opacity: cardOpacity, y: cardTransformY }}>
-        <Card sx={{ mx: 4 }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              You made <CountUp end={linkTripsCount ?? 0} /> trips on Link,{" "}
-              <br />
-              {linkTripPercentage}% of all your trips.
-            </Typography>
-          </CardContent>
-        </Card>
+        <FloatingCard>
+          You made <CountUp end={linkTripsCount ?? 0} /> trips on Link, <br />
+          {linkTripPercentage}% of all your trips.
+        </FloatingCard>
       </motion.div>
       <ScrollingText style={{ x: transformedXPos }} ref={mainRef}>
         This is the 1-Line, to Northgate.

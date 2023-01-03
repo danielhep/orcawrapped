@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useAppState } from "./AppContext";
+import FloatingCard from "./ui/FloatingCard";
 
 const ScrollingText = styled(motion.p)`
   color: white;
@@ -27,10 +28,10 @@ export default function HomeTopStation() {
     [0, 0.45],
     ["85vw", "0vw"]
   );
-  const cardOpacity = useTransform(scrollYProgress, [0.4, 0.45], ["0", "1"]);
+  const cardOpacity = useTransform(scrollYProgress, [0.45, 0.6], ["0", "1"]);
   const cardTransformY = useTransform(
     scrollYProgress,
-    [0.4, 0.45],
+    [0.45, 0.6],
     ["20%", "0%"]
   );
 
@@ -38,7 +39,6 @@ export default function HomeTopStation() {
   const totalBoops = stationStats.reduce((prev, cur) => prev + cur.count, 0);
   const percentage = Math.round((stationStats[0].count / totalBoops) * 100);
 
-  console.log(stationStats[0]);
   let doorSideText = "";
   if (stationStats[0].doorSide === "LEFT") {
     doorSideText = "left";
@@ -64,16 +64,10 @@ export default function HomeTopStation() {
         ${doorSideText}.`}
       </ScrollingText>
       <motion.div style={{ opacity: cardOpacity, y: cardTransformY }}>
-        <Card sx={{ mx: 4 }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              <>
-                {percentage}% of your trips on Link began
-                <br /> or ended at {stationStats[0].station}.
-              </>
-            </Typography>
-          </CardContent>
-        </Card>
+        <FloatingCard>
+          {percentage}% of your trips on Link began
+          <br /> or ended at {stationStats[0].station}.
+        </FloatingCard>
       </motion.div>
     </Box>
   );
