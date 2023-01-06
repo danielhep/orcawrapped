@@ -47,7 +47,6 @@ export default function Home1LineSection() {
   return (
     <Box
       sx={{
-        minHeight: "30vh",
         width: "100vw",
         display: "flex",
         alignItems: "center",

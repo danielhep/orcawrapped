@@ -44,6 +44,14 @@ function BarElement({ line, yScale, xScale, maxWidth }) {
       >
         {line.routeShortName ?? "<Unknown>"}
       </text>
+      <text
+        dominantBaseline="middle"
+        y={yScale(`${line.line ?? "unknown"}-${line.agencyName}`) + 22}
+        x={adjustedTextX}
+        style={{ fill: "white", fontSize: "1em" }}
+      >
+        {line.count} Rides
+      </text>
     </React.Fragment>
   );
 }
