@@ -10,13 +10,13 @@ import { parseOrcaFiles } from "../src/processing_utils/processingUtils";
 
 export default function Home(): JSX.Element {
   const [files, setFiles] = useState<FileValidated[]>([]);
-  const [appState, setAppState] = useAppState();
+  const [appState, setCsvRows] = useAppState();
   const router = useRouter();
 
   useEffect(() => {
     async function process(): Promise<void> {
       const output = await parseOrcaFiles(files.map((f) => f.file));
-      setAppState(output);
+      setCsvRows(output);
     }
     if (files.length > 0) {
       void process();

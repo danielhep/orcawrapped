@@ -204,22 +204,21 @@ function findProblematicData(processed: ProcessedOrcaData[]) {
   });
 }
 
-export async function parseOrcaFiles(files: File[]): Promise<AppState> {
+export async function parseOrcaFiles(files: File[]): Promise<OrcaCSVOutput> {
   const allPromii = await Promise.all(files.map(parseFile));
-  console.log(allPromii[0]);
-  const processed = processAllRows(allPromii[0]);
-  const extraData = generateExtraDataObject(processed);
+  return allPromii[0];
+}
 
+export function generateAppState(rows: OrcaCSVOutput): AppState {
+  const processed = processAllRows(rows);
   findProblematicData(processed);
-
-  return { processed, extraData };
+  return {
+    processed,
+    extraData: generateExtraDataObject(processed),
+  };
 }
 
 export function parseOrcaFileCsvSync(csvString: string): AppState {
   const parsedCsv = Papa.parse(csvString, { header: true });
-
-  const processed = processAllRows(parsedCsv.data);
-  const extraData = generateExtraDataObject(processed);
-
-  return { processed, extraData };
+  return generateAppState(parsedCsv);
 }

@@ -1,13 +1,13 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
-import { AppState, ExtraDataType, ProcessedOrcaData } from "../types";
+import { AppState, OrcaCSVOutput } from "../types";
 
 export const AppContext = createContext<
-  [AppState | undefined, Dispatch<SetStateAction<AppState>>]
+  [AppState | undefined, Dispatch<SetStateAction<OrcaCSVOutput>>]
 >([{ processed: [] }, () => {}]);
 
 export function useAppState(): [
   AppState | undefined,
-  Dispatch<SetStateAction<AppState>>
+  Dispatch<SetStateAction<OrcaCSVOutput>>
 ] {
   const appContext = useContext(AppContext);
   return appContext;

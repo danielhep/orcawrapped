@@ -8,9 +8,10 @@ import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import React from "react";
 
-import { AppState } from "../src/types";
+import { AppState, OrcaCSVOutput, OrcaCSVRow } from "../src/types";
 import { AppContext } from "../src/components/AppContext";
 import RainBackground from "../src/components/RainBackground";
+import { generateAppState } from "../src/processing_utils/processingUtils";
 
 Bugsnag.start({
   apiKey: "04e95878207d41d2da7c5d058cc3e3be",
@@ -26,7 +27,11 @@ const theme = createTheme({
 });
 
 function MyApp({ Component, pageProps }): JSX.Element {
-  const [appState, setAppState] = useLocalStorageState<AppState>("appState");
+  const [parsedOrcaCsv, setParsedOrcaCsv] =
+    useLocalStorageState<OrcaCSVOutput>("orcaCsv");
+
+  const appState = parsedOrcaCsv ? generateAppState(parsedOrcaCsv) : undefined;
+
   return (
     <div
       style={{
@@ -37,7 +42,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
     >
       <RainBackground />
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={[appState, setAppState]}>
+        <AppContext.Provider value={[appState, setParsedOrcaCsv]}>
           {ErrorBoundary ? (
             <ErrorBoundary>
               <Component {...pageProps} />
