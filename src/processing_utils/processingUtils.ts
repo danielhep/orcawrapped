@@ -13,7 +13,11 @@ import { linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 
-async function parseFile(file: File): Promise<OrcaCSVOutput> {
+/**
+ * @param file File or string containing CSV
+ * @returns Parsed OrcaCSVOutput
+ */
+async function parseFile(file: File | string): Promise<OrcaCSVOutput> {
   return await new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
@@ -151,9 +155,7 @@ export function getIdealRouteShortName(
   }
 }
 
-async function processAllRows(
-  rows: OrcaCSVOutput
-): Promise<ProcessedOrcaData[]> {
+function processAllRows(rows: OrcaCSVOutput): ProcessedOrcaData[] {
   return rows.map((row) => {
     const lineStr = row.Location.match(/Line: ([^,]*)/)?.[1].trim();
     const stopStr = row.Location.match(/Stop: (.*)/)?.[1].trim();
@@ -204,10 +206,20 @@ function findProblematicData(processed: ProcessedOrcaData[]) {
 
 export async function parseOrcaFiles(files: File[]): Promise<AppState> {
   const allPromii = await Promise.all(files.map(parseFile));
-  const processed = await processAllRows(allPromii[0]);
+  console.log(allPromii[0]);
+  const processed = processAllRows(allPromii[0]);
   const extraData = generateExtraDataObject(processed);
 
   findProblematicData(processed);
+
+  return { processed, extraData };
+}
+
+export function parseOrcaFileCsvSync(csvString: string): AppState {
+  const parsedCsv = Papa.parse(csvString, { header: true });
+
+  const processed = processAllRows(parsedCsv.data);
+  const extraData = generateExtraDataObject(processed);
 
   return { processed, extraData };
 }

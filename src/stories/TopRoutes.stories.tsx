@@ -1,19 +1,50 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React, { useState } from "react";
+import { ComponentStory, ComponentMeta, ArgTypes } from "@storybook/react";
 
 import TopRoutes from "../cards/TopRoutes";
-import danielOrca from "./mocks/danielOrca.json";
-import sabrinaOrca from "./mocks/sabrinaOrca.json";
-import { fixDates } from "./utils";
+import danielOrca from "./mocks/danielOrca.csv";
+import sabrinaOrca from "./mocks/sabrinaOrca.csv";
+import { parseOrcaFileCsvSync } from "../processing_utils/processingUtils";
+import { AppContext } from "../components/AppContext";
+
+if (danielOrca) {
+  console.log(parseOrcaFileCsvSync(danielOrca));
+}
+
+function getOrcaCardData(name) {
+  switch (name) {
+    case "daniel":
+      return danielOrca;
+    case "sabrina":
+      return sabrinaOrca;
+  }
+}
+
+const argTypes: ArgTypes = {
+  orcaCardName: {
+    name: "Orca Card Name",
+    options: ["daniel", "sabrina"],
+    defaultValue: "daniel",
+    control: { type: "select" },
+  },
+};
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Cards/TopRoutes",
+  title: "Cards",
   component: TopRoutes,
+  argTypes,
   decorators: [
-    (Story) => (
+    (Story, context) => (
       <div style={{ margin: "10px", width: "300px" }}>
-        <Story />
+        <AppContext.Provider
+          value={[
+            parseOrcaFileCsvSync(getOrcaCardData(context.args.orcaCardName)),
+            () => {},
+          ]}
+        >
+          <Story />
+        </AppContext.Provider>
       </div>
     ),
   ],
@@ -25,16 +56,6 @@ const Template: ComponentStory<typeof TopRoutes> = (args) => (
   <TopRoutes {...args} />
 );
 
-export const DanielData = Template.bind({}) as ComponentStory<typeof TopRoutes>;
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-DanielData.args = {
-  state: fixDates(danielOrca),
-};
-
-export const SabrinaData = Template.bind({}) as ComponentStory<
+export const TopRoutesStory = Template.bind({}) as ComponentStory<
   typeof TopRoutes
 >;
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-SabrinaData.args = {
-  state: fixDates(sabrinaOrca),
-};

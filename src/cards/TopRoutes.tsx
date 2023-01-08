@@ -3,7 +3,14 @@ import { Group } from "@visx/group";
 import { ParentSize } from "@visx/responsive";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { AppContext } from "../components/AppContext";
 import { AppState, WrappedCard } from "../types";
 
 function BarElement({ line, yScale, xScale, maxWidth }) {
@@ -56,8 +63,10 @@ function BarElement({ line, yScale, xScale, maxWidth }) {
   );
 }
 
-function FavoriteRoutes({ state }: { state: AppState }): JSX.Element {
-  const data = state?.extraData?.routeOccurrences.slice(0, 4) ?? [];
+function FavoriteRoutes(): ReactNode {
+  const [state] = useContext(AppContext);
+  if (!state) return null;
+  const data = state.extraData?.routeOccurrences.slice(0, 4) ?? [];
   const dataWithIDs = data.map((d) => ({
     ...d,
     id: `${d.line ?? "unknown"}-${d.agencyName}`,
