@@ -10,6 +10,7 @@ import { ExpandMore } from "@mui/icons-material";
 import { useRef } from "react";
 import Home1LineSection from "../src/components/Home1LineSection";
 import HomeTopRoute from "../src/components/HomeTopStation";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const BigText = styled.p`
   color: white;
@@ -85,11 +86,13 @@ export default function Wrapped(): JSX.Element | null {
       <HomeTopRoute />
 
       <Container>
-        <JustifiedGrid gap={30} columnRange={[1, 4]}>
+        <Grid2 container spacing={4}>
           {shownStories.map((S, index) => (
-            <S state={appState} key={`${S.cardName}-${index}`} />
+            <Grid2 key={`${S.cardName}-${index}`} xs={3}>
+              <S state={appState} />
+            </Grid2>
           ))}
-        </JustifiedGrid>
+        </Grid2>
       </Container>
     </>
   );

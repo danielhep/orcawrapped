@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { GradientPinkBlue, LinearGradient } from "@visx/gradient";
 import { Group } from "@visx/group";
 import { ParentSize } from "@visx/responsive";
@@ -73,11 +74,11 @@ function FavoriteRoutes(): ReactNode {
   }));
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         aspectRatio: "9/16",
         boxShadow: "0px 0px 15px 0px #c745ff",
-        borderRadius: 15,
+        borderRadius: "15px",
       }}
     >
       <ParentSize>
@@ -150,7 +151,7 @@ function FavoriteRoutes(): ReactNode {
           );
         }}
       </ParentSize>
-    </div>
+    </Box>
   );
 }
 
