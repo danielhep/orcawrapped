@@ -33,26 +33,29 @@ function MyApp({ Component, pageProps }): JSX.Element {
   const appState = parsedOrcaCsv ? generateAppState(parsedOrcaCsv) : undefined;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        flex: "1 1 auto",
-      }}
-    >
-      <RainBackground />
-      <ThemeProvider theme={theme}>
-        <AppContext.Provider value={[appState, setParsedOrcaCsv]}>
-          {ErrorBoundary ? (
-            <ErrorBoundary>
+    <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: "1 1 auto",
+          zIndex: 2,
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          <AppContext.Provider value={[appState, setParsedOrcaCsv]}>
+            {ErrorBoundary ? (
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            ) : (
               <Component {...pageProps} />
-            </ErrorBoundary>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </AppContext.Provider>
-      </ThemeProvider>
-    </div>
+            )}
+          </AppContext.Provider>
+        </ThemeProvider>
+      </div>
+      <RainBackground />
+    </>
   );
 }
 
