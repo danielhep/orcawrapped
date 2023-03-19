@@ -8,8 +8,8 @@ import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import React from "react";
 
-import { AppState, OrcaCSVOutput, OrcaCSVRow } from "../src/types";
-import { AppContext } from "../src/components/AppContext";
+import { UnprocessedOrcaCard } from "../src/types";
+import { AppContext, defaultAppState } from "../src/components/AppContext";
 import RainBackground from "../src/components/RainBackground";
 import { generateAppState } from "../src/processing_utils/processingUtils";
 
@@ -27,10 +27,12 @@ const theme = createTheme({
 });
 
 function MyApp({ Component, pageProps }): JSX.Element {
-  const [parsedOrcaCsv, setParsedOrcaCsv] =
-    useLocalStorageState<OrcaCSVOutput>("orcaCsv");
+  const [unprocessedOrcaCards, setUnprocessedOrcaCards] =
+    useLocalStorageState<UnprocessedOrcaCard[]>("orcaCsv");
 
-  const appState = parsedOrcaCsv ? generateAppState(parsedOrcaCsv) : undefined;
+  const appState = unprocessedOrcaCards
+    ? generateAppState(unprocessedOrcaCards)
+    : defaultAppState;
 
   return (
     <>
@@ -43,7 +45,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
         }}
       >
         <ThemeProvider theme={theme}>
-          <AppContext.Provider value={[appState, setParsedOrcaCsv]}>
+          <AppContext.Provider value={[appState, setUnprocessedOrcaCards]}>
             {ErrorBoundary ? (
               <ErrorBoundary>
                 <Component {...pageProps} />

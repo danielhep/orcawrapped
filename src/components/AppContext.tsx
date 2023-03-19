@@ -1,13 +1,30 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
-import { AppState, OrcaCSVOutput } from "../types";
+import { AppState, UnprocessedOrcaCard } from "../types";
+
+export const defaultAppState: AppState = {
+  orcaData: [],
+  aggregateExtraData: {
+    routeOccurrences: [],
+    trips: [],
+    tapOffBehavior: {
+      expected: 0,
+      missing: 0,
+    },
+    linkStats: {
+      stationStats: [],
+      linkTrips: [],
+    },
+  },
+  totalRowCount: 0,
+};
 
 export const AppContext = createContext<
-  [AppState | undefined, Dispatch<SetStateAction<OrcaCSVOutput>>]
->([{ processed: [] }, () => {}]);
+  [AppState, Dispatch<SetStateAction<UnprocessedOrcaCard[]>>]
+>([defaultAppState, () => {}]);
 
 export function useAppState(): [
-  AppState | undefined,
-  Dispatch<SetStateAction<OrcaCSVOutput>>
+  AppState,
+  Dispatch<SetStateAction<UnprocessedOrcaCard[]>>
 ] {
   const appContext = useContext(AppContext);
   return appContext;

@@ -1,13 +1,17 @@
-import { parse } from "date-fns";
+import { parse, previousDay } from "date-fns";
 import Papa from "papaparse";
 import Bugsnag from "@bugsnag/js";
 import {
-  OrcaCSVOutput,
-  ProcessedOrcaData,
+  OrcaCSVRow,
+  ProcessedOrcaRow,
   ExtraDataType,
   AppState,
   ActivityType,
-  OrcaCSVRow,
+  ProcessedOrcaCard,
+  UnprocessedOrcaCard,
+  IndividualRouteOccurrences,
+  LinkStats,
+  LinkStationStats,
 } from "../types";
 import { linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
@@ -15,13 +19,18 @@ import { findTripsFromTaps } from "./findTripsFromTaps";
 
 /**
  * @param file File or string containing CSV
- * @returns Parsed OrcaCSVOutput
+ * @returns Parsed Array<OrcaCSVRow>
  */
-async function parseFile(file: File | string): Promise<OrcaCSVOutput> {
+async function parseFile(file: File | string): Promise<UnprocessedOrcaCard> {
   return await new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
-      complete: (res) => resolve(res.data),
+      complete: (res) => {
+        resolve({
+          rawCsvRows: res.data,
+          fileName: file instanceof File ? file.name : file,
+        });
+      },
       error: (err) => reject(err),
     });
   });
@@ -155,27 +164,29 @@ export function getIdealRouteShortName(
   }
 }
 
-function processAllRows(rows: OrcaCSVOutput): ProcessedOrcaData[] {
-  return rows.map((row) => {
-    const lineStr = row.Location.match(/Line: ([^,]*)/)?.[1].trim();
-    const stopStr = row.Location.match(/Stop: (.*)/)?.[1].trim();
-    const routeShortName = getIdealRouteShortName(row, lineStr);
+function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
+  return (
+    rows?.map((row) => {
+      const lineStr = row.Location.match(/Line: ([^,]*)/)?.[1].trim();
+      const stopStr = row.Location.match(/Stop: (.*)/)?.[1].trim();
+      const routeShortName = getIdealRouteShortName(row, lineStr);
 
-    return {
-      cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
-      balance: dollarStringToNumber(row.Balance),
-      time: parse(`${row.Date} ${row.Time}`, "M/d/yyyy h:mmaa", new Date()),
-      line: lineStr,
-      stop: stopStr,
-      routeShortName,
-      agency: row.Agency,
-      activity: parseActivity(row.Activity),
-      declined: row.Activity.toLowerCase().includes("declined"),
-    };
-  });
+      return {
+        cost: dollarStringToNumber(row["+/-"]) * -1, //func returns Number matching sign of input. We want to represent cost, so flip this, so charges are positive and credits are negative
+        balance: dollarStringToNumber(row.Balance),
+        time: parse(`${row.Date} ${row.Time}`, "M/d/yyyy h:mmaa", new Date()),
+        line: lineStr,
+        stop: stopStr,
+        routeShortName,
+        agency: row.Agency,
+        activity: parseActivity(row.Activity),
+        declined: row.Activity.toLowerCase().includes("declined"),
+      };
+    }) || []
+  );
 }
 
-function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
+function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
   const trips = findTripsFromTaps(data);
   return {
     routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
@@ -188,37 +199,122 @@ function generateExtraDataObject(data: ProcessedOrcaData[]): ExtraDataType {
   };
 }
 
-function findProblematicData(processed: ProcessedOrcaData[]) {
-  // Find rows of processed data which do not have a populated routeShortName
-  processed.forEach((row) => {
-    if (
-      !row.routeShortName &&
-      row.line &&
-      (row.activity === ActivityType.BOARDING ||
-        row.activity === ActivityType.TRANSFER)
-    ) {
-      Bugsnag.notify(new Error("missing routeShortName"), (e) =>
-        e.addMetadata("row", row)
-      );
-    }
-  });
-}
-
-export async function parseOrcaFiles(files: File[]): Promise<OrcaCSVOutput> {
-  const allPromii = await Promise.all(files.map(parseFile));
-  return allPromii[0];
-}
-
-export function generateAppState(rows: OrcaCSVOutput): AppState {
-  const processed = processAllRows(rows);
-  findProblematicData(processed);
+function processOrcaCard(
+  unprocessedOrcaCard: UnprocessedOrcaCard
+): ProcessedOrcaCard {
+  const processed = processAllRows(unprocessedOrcaCard.rawCsvRows);
   return {
-    processed,
+    processed: processed,
     extraData: generateExtraDataObject(processed),
+    fileName: unprocessedOrcaCard.fileName,
   };
 }
 
-export function parseOrcaFileCsvSync(csvString: string): AppState {
+function findProblematicData(orcaData: ProcessedOrcaCard[]) {
+  // Find rows of processed data which do not have a populated routeShortName
+  orcaData.forEach((card) =>
+    card.processed.forEach((row) => {
+      if (
+        !row.routeShortName &&
+        row.line &&
+        (row.activity === ActivityType.BOARDING ||
+          row.activity === ActivityType.TRANSFER)
+      ) {
+        Bugsnag.notify(new Error("missing routeShortName"), (e) =>
+          e.addMetadata("row", row)
+        );
+      }
+    })
+  );
+}
+
+function aggregateExtraDataObjects(
+  cardData: ProcessedOrcaCard[]
+): ExtraDataType {
+  const extraDataObjects = cardData.map((cd) => cd.extraData);
+  // Creates a new object of all route occurrences by summing the values from input array
+  // where the agency and line match.
+  const routeOccurrences = extraDataObjects
+    .flatMap((edo) => edo.routeOccurrences)
+    .reduce<IndividualRouteOccurrences[]>((prev, cur) => {
+      const indexOfMatch = prev.findIndex(
+        (p) => p.line === cur.line && p.agencyName === cur.agencyName
+      );
+      if (indexOfMatch !== -1) {
+        prev[indexOfMatch].count += cur.count;
+      } else {
+        prev.push(cur);
+      }
+      return prev;
+    }, []);
+  const trips = extraDataObjects.flatMap((edo) => edo.trips);
+  const tapOffBehavior = extraDataObjects
+    .map((edo) => edo.tapOffBehavior)
+    .reduce(
+      (prev, cur) => ({
+        expected: prev.expected + cur.expected,
+        missing: prev.missing + cur.missing,
+      }),
+      { expected: 0, missing: 0 }
+    );
+
+  const linkStats: LinkStats = {
+    linkTrips: extraDataObjects
+      .map((edo) => edo.linkStats)
+      .flatMap((ls) => ls.linkTrips),
+    stationStats: extraDataObjects
+      .map((edo) => edo.linkStats)
+      .flatMap((ls) => ls.stationStats)
+      .reduce<LinkStationStats[]>((prev, cur) => {
+        const indexOfMatch = prev.findIndex((p) => p.station === cur.station);
+        if (indexOfMatch !== -1) {
+          prev[indexOfMatch].count += cur.count;
+        } else {
+          prev.push(cur);
+        }
+        return prev;
+      }, []),
+  };
+  return {
+    routeOccurrences,
+    trips,
+    tapOffBehavior,
+    linkStats,
+  };
+}
+
+export function generateAppState(
+  unprocessedOrcaData: UnprocessedOrcaCard[]
+): AppState {
+  const processedData: ProcessedOrcaCard[] =
+    unprocessedOrcaData.map(processOrcaCard);
+
+  findProblematicData(processedData);
+  // In the future we can add extra elements to the app state here
+  return {
+    orcaData: processedData,
+    aggregateExtraData: aggregateExtraDataObjects(processedData),
+    totalRowCount: processedData
+      .map((pd) => pd.processed)
+      .reduce((prev, cur) => cur.length + prev, 0),
+  };
+}
+
+export async function parseOrcaFiles(
+  files: File[]
+): Promise<UnprocessedOrcaCard[]> {
+  return await Promise.all(files.map(parseFile));
+}
+
+export function parseOrcaFileCsvSync(
+  csvString: string,
+  fileName: string
+): AppState {
   const parsedCsv = Papa.parse(csvString, { header: true });
-  return generateAppState(parsedCsv);
+  return generateAppState([
+    {
+      rawCsvRows: parsedCsv,
+      fileName,
+    },
+  ]);
 }

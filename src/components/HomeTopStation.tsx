@@ -35,14 +35,15 @@ export default function HomeTopStation() {
     ["20%", "0%"]
   );
 
-  const stationStats = appState?.extraData?.linkStats.stationStats ?? [];
+  const stationStats =
+    appState.aggregateExtraData?.linkStats.stationStats ?? [];
   const totalBoops = stationStats.reduce((prev, cur) => prev + cur.count, 0);
-  const percentage = Math.round((stationStats[0].count / totalBoops) * 100);
+  const percentage = Math.round((stationStats[0]?.count / totalBoops) * 100);
 
   let doorSideText = "";
-  if (stationStats[0].doorSide === "LEFT") {
+  if (stationStats[0]?.doorSide === "LEFT") {
     doorSideText = "left";
-  } else if (stationStats[0].doorSide === "RIGHT") {
+  } else if (stationStats[0]?.doorSide === "RIGHT") {
     doorSideText = "right";
   }
 
@@ -58,7 +59,7 @@ export default function HomeTopStation() {
       }}
     >
       <ScrollingText style={{ x: transformedXPos }} ref={mainRef}>
-        Next stop, {stationStats[0].station.split(" Station")[0]}.
+        Next stop, {stationStats[0]?.station.split(" Station")[0]}.
         {doorSideText !== "" &&
           ` Doors to my
         ${doorSideText}.`}
@@ -66,7 +67,7 @@ export default function HomeTopStation() {
       <motion.div style={{ opacity: cardOpacity, y: cardTransformY }}>
         <FloatingCard>
           {percentage}% of your trips on Link began
-          <br /> or ended at {stationStats[0].station}.
+          <br /> or ended at {stationStats[0]?.station}.
         </FloatingCard>
       </motion.div>
     </Box>

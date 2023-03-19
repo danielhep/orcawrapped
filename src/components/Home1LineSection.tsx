@@ -38,9 +38,10 @@ export default function Home1LineSection() {
     ["20%", "0%"]
   );
 
-  const linkTripsCount = appState?.extraData?.linkStats.linkTrips.length ?? 0;
+  const linkTripsCount =
+    appState?.aggregateExtraData.linkStats.linkTrips.length ?? 0;
   const linkTripPercentage = Math.round(
-    (linkTripsCount / (appState?.extraData?.trips.length ?? 1)) * 100
+    (linkTripsCount / (appState?.aggregateExtraData.trips.length ?? 1)) * 100
   );
 
   if (!appState) return null;

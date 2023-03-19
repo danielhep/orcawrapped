@@ -1,4 +1,4 @@
-import { DoorSides, LinkStats, OrcaTrip, ProcessedOrcaData } from "../types";
+import { DoorSides, LinkStats, OrcaTrip, ProcessedOrcaRow } from "../types";
 
 const LINK_DOOR_SIDE: Record<string, DoorSides> = {
   northgate: "EITHER",
@@ -22,7 +22,7 @@ const LINK_DOOR_SIDE: Record<string, DoorSides> = {
   "angle lake": "EITHER",
 };
 
-export function routeOccurrences(data: ProcessedOrcaData[]): Array<{
+export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
   line: string | undefined;
   count: number;
   agencyName: string;

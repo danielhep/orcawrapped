@@ -1,9 +1,15 @@
-export interface AppState {
-  processed: ProcessedOrcaData[];
-  extraData?: ExtraDataType;
+export interface ProcessedOrcaCard {
+  fileName: string;
+  processed: ProcessedOrcaRow[];
+  extraData: ExtraDataType;
 }
 
-/* eslint-disable no-unused-vars */
+export interface AppState {
+  orcaData: ProcessedOrcaCard[];
+  aggregateExtraData: ExtraDataType;
+  totalRowCount: number;
+}
+
 export interface OrcaCSVRow {
   "+/-": string;
   Activity: string;
@@ -14,7 +20,10 @@ export interface OrcaCSVRow {
   Time: string;
 }
 
-export type OrcaCSVOutput = OrcaCSVRow[];
+export interface UnprocessedOrcaCard {
+  fileName: string;
+  rawCsvRows: any[];
+}
 
 export enum ActivityType {
   TAP_OFF,
@@ -29,7 +38,7 @@ export enum ActivityType {
   UNKNOWN,
 }
 
-export interface ProcessedOrcaData {
+export interface ProcessedOrcaRow {
   cost: number;
   balance: number;
   time: Date;
@@ -41,29 +50,33 @@ export interface ProcessedOrcaData {
   declined: boolean;
 }
 
+export interface IndividualRouteOccurrences {
+  line: string | undefined;
+  count: number;
+  agencyName: string;
+  routeShortName?: string;
+}
+
 export interface ExtraDataType {
-  routeOccurrences: Array<{
-    line: string | undefined;
-    count: number;
-    agencyName: string;
-    routeShortName?: string;
-  }>;
+  routeOccurrences: Array<IndividualRouteOccurrences>;
   trips: OrcaTrip[];
   tapOffBehavior: {
-    expected: Number;
-    missing: Number;
+    expected: number;
+    missing: number;
   };
   linkStats: LinkStats;
 }
 
 export type DoorSides = "LEFT" | "RIGHT" | "EITHER";
 
+export interface LinkStationStats {
+  station: string;
+  count: number;
+  doorSide: DoorSides;
+}
+
 export interface LinkStats {
-  stationStats: Array<{
-    station: string;
-    count: number;
-    doorSide: DoorSides;
-  }>;
+  stationStats: Array<LinkStationStats>;
   linkTrips: OrcaTrip[];
 }
 
@@ -72,11 +85,11 @@ export interface LinkStats {
  */
 export class OrcaTrip {
   /** The boarding event that initiated the trip */
-  boarding: ProcessedOrcaData;
+  boarding: ProcessedOrcaRow;
   /** The alighting event that ended the trip, if available. Only relevant if `routeShortName` is defined in `OrcaTrip.routesExpectingTapOff`. */
-  alighting?: ProcessedOrcaData | undefined;
+  alighting?: ProcessedOrcaRow | undefined;
   /** Any inspection events found to be related to this trip */
-  inspections: ProcessedOrcaData[];
+  inspections: ProcessedOrcaRow[];
 
   static routesExpectingTapOff: Array<string | undefined> = [
     "1-Line",
@@ -84,7 +97,7 @@ export class OrcaTrip {
     "S Line",
   ];
 
-  constructor(boarding: ProcessedOrcaData, alighting?: ProcessedOrcaData) {
+  constructor(boarding: ProcessedOrcaRow, alighting?: ProcessedOrcaRow) {
     this.boarding = boarding;
     this.alighting = alighting;
     this.inspections = [];

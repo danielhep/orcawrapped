@@ -69,7 +69,7 @@ export default function Wrapped(): JSX.Element | null {
             <DramaticText>
               <CountUp
                 duration={1}
-                end={appState.processed.length}
+                end={appState.totalRowCount}
                 formattingFn={(n) => n.toLocaleString()}
               />
             </DramaticText>{" "}
