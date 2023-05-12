@@ -9,7 +9,7 @@ body {
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  background: linear-gradient(to bottom, #202020, #111119);
+  background: #e1f0f1;
 }
 
 a {

@@ -11,6 +11,7 @@ import { useRef } from "react";
 import Home1LineSection from "../src/components/Home1LineSection";
 import HomeTopRoute from "../src/components/HomeTopStation";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import WrappedHeader from "../src/components/WrappedHeader";
 
 const BigText = styled.p`
   color: white;
@@ -51,6 +52,7 @@ export default function Wrapped(): JSX.Element | null {
   const shownStories = allStories.filter((s) => s.test(appState));
   return (
     <>
+      <WrappedHeader />
       <Box
         sx={{
           minHeight: "100vh",

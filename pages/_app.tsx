@@ -2,6 +2,7 @@ import "../styles/globals.css";
 // eslint-disable-next-line camelcase
 import "@fontsource/open-sans/variable.css";
 import "@fontsource/arvo";
+import "@fontsource/ibm-plex-serif";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useLocalStorageState from "use-local-storage-state";
 import Bugsnag from "@bugsnag/js";
@@ -56,7 +57,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
           </AppContext.Provider>
         </ThemeProvider>
       </div>
-      <RainBackground />
+      {/* <RainBackground /> */}
     </>
   );
 }

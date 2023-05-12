@@ -1505,6 +1505,11 @@
   resolved "https://registry.npmjs.org/@fontsource/arvo/-/arvo-4.5.7.tgz"
   integrity sha512-Vl0o67kDTzYeArRtnyzA/JNyLBektY5l/SL3lQGsvOLBNktaN46o3B8/OuS7G17dG8RaRSVTdtpBG/RHazIfDA==
 
+"@fontsource/ibm-plex-serif@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.npmjs.org/@fontsource/ibm-plex-serif/-/ibm-plex-serif-4.5.12.tgz"
+  integrity sha512-PQgB0qdwIH+2HebptJQANsD8SWPI8nzZ++hcQHI5HStn+IqD8WO/n70rxUpgdqfBtgYCZCWKFUQCYhaltEKRfw==
+
 "@fontsource/open-sans@^4.5.13":
   version "4.5.13"
   resolved "https://registry.npmjs.org/@fontsource/open-sans/-/open-sans-4.5.13.tgz"

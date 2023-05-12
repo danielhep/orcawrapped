@@ -25,6 +25,7 @@
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
     "@fontsource/arvo": "^4.5.7",
+    "@fontsource/ibm-plex-serif": "^4.5.12",
     "@fontsource/open-sans": "^4.5.13",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
