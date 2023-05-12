@@ -21,11 +21,34 @@ Bugsnag.start({
 
 const ErrorBoundary = Bugsnag.getPlugin("react")?.createErrorBoundary(React);
 
+declare module "@mui/material/styles" {
+  interface Theme {
+    fonts: {
+      titleFont: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    fonts?: {
+      titleFont?: string;
+    };
+  }
+}
+
 const theme = createTheme({
   typography: {
     fontFamily: ["Open Sans", "Helvetica"].join(","),
+    h3: {
+      fontSize: 36,
+      fontWeight: 700,
+    },
+  },
+  fonts: {
+    titleFont: ["IBM Plex Serif", "serif"].join(","),
   },
 });
+
+theme.typography.h3.fontFamily = theme.fonts.titleFont;
 
 function MyApp({ Component, pageProps }): JSX.Element {
   const [unprocessedOrcaCards, setUnprocessedOrcaCards] =

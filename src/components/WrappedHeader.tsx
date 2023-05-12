@@ -1,7 +1,8 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
 
 export default function WrappedHeader() {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -21,12 +22,12 @@ export default function WrappedHeader() {
         }}
       >
         <Typography
-          component="p"
+          paragraph
+          color={theme.palette.text.secondary}
           sx={{
             fontWeight: 700,
             fontSize: "36px",
             mr: "40%",
-            color: "rgba(0, 0,0, 0.66)",
             zIndex: 2,
           }}
         >
@@ -34,10 +35,11 @@ export default function WrappedHeader() {
         </Typography>
         <Typography
           component="h1"
+          color={theme.palette.text.primary}
           sx={{
             fontSize: "64px",
             textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25);",
-            fontFamily: "IBM Plex Serif",
+            fontFamily: theme.fonts.titleFont,
             fontWeight: 700,
             zIndex: 2,
           }}

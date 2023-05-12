@@ -1,13 +1,14 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 export default function OrcaQuestionBox() {
+  const theme = useTheme();
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box
         sx={{
           borderRadius: 9999,
           width: "100px",
-          fontFamily: "IBM Plex Serif",
+          fontFamily: theme.fonts.titleFont,
           fontWeight: 700,
           fontSize: "64px",
           textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -23,8 +24,8 @@ export default function OrcaQuestionBox() {
         ?
       </Box>
       <Typography sx={{ maxWidth: 400, fontSize: "24px" }}>
-        In 2022, we got ORCA NextGen, which is when data collection began.
-        Therefore, this is a partial year in review.
+        ORCA Next Gen launched in May 2022. Some usage data is only available
+        for taps on the new ORCA readers.
       </Typography>
     </Box>
   );
