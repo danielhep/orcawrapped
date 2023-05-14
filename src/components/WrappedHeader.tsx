@@ -1,12 +1,16 @@
 import { Box, Container, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
+import { useContext } from "react";
+import useDarkMode from "use-dark-mode";
 
 export default function WrappedHeader() {
   const theme = useTheme();
+  const { value: darkModeEnabled } = useDarkMode();
+
   return (
     <Box
       sx={{
-        background: "white",
+        background: theme.palette.background.default,
         borderBottom: "5px dashed #68A2B7",
         marginBottom: "161px",
       }}
@@ -23,7 +27,11 @@ export default function WrappedHeader() {
       >
         <Typography
           paragraph
-          color={theme.palette.text.secondary}
+          color={
+            darkModeEnabled
+              ? theme.palette.brightText
+              : theme.palette.text.secondary
+          }
           sx={{
             fontWeight: 700,
             fontSize: "36px",

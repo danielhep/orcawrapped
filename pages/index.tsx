@@ -1,27 +1,18 @@
-/* eslint-disable react/no-unescaped-entities */
-import { FileValidated } from "@dropzone-ui/react";
-import { ArrowForward } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  Link,
-  Typography,
-} from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAppState } from "../src/components/AppContext";
-import FileUpload from "../src/components/FileUpload";
+import { useRouter } from "next/router";
 import { parseOrcaFiles } from "../src/processing_utils/processingUtils";
+import { Dropzone, ExtFile } from "@files-ui/react";
+import FileUpload from "../src/components/FileUpload";
+import { Box, Container, Link, Typography, useTheme } from "@mui/material";
+import OrcaQuestionBox from "../src/components/OrcaQuestionBox";
 
-export default function Home(): JSX.Element {
-  const [files, setFiles] = useState<FileValidated[]>([]);
+export default function Index() {
+  const [files, setFiles] = useState<ExtFile[]>([]);
   const [appState, setCsvRows] = useAppState();
   const router = useRouter();
+  const theme = useTheme();
 
   useEffect(() => {
     async function process(): Promise<void> {
@@ -34,7 +25,7 @@ export default function Home(): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
-  const hasStoredData = Object.keys(appState || {}).length !== 0;
+  const hasStoredData = appState?.orcaData.length > 0;
 
   return (
     <>
@@ -43,76 +34,47 @@ export default function Home(): JSX.Element {
         <meta name="description" content="Get your ORCA year in transit!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Box
-        component="main"
-        sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          flexGrow: 1,
-          minHeight: "100%",
-          gap: 3,
-        }}
-      >
-        <Card sx={{ minWidth: 375, maxWidth: 450 }}>
-          <CardContent>
-            <FileUpload onFilesChange={setFiles} files={files} />
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button
-                color="success"
-                variant="contained"
-                endIcon={<ArrowForward />}
-                disabled={!hasStoredData}
-                onClick={() => {
-                  void router.push("/wrapped");
-                }}
-              >
-                View ORCA Wrapped
-              </Button>
-              {hasStoredData && files.length === 0 && (
-                <Typography mt={1}>
-                  <small>
-                    We found stored ORCA history on this browser. If you'd like
-                    to overwrite it, upload new files above.
-                  </small>
-                </Typography>
-              )}
-            </Box>
-          </CardContent>
-        </Card>
-        <Card sx={{ minWidth: 375, maxWidth: 500 }}>
-          <CardHeader
-            title="Instructions"
-            subheader="How to get your ORCA history."
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            minHeight: "100vh",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+              lineHeight: 1.5,
+              color: theme.palette.text.primary,
+            }}
+          >
+            See your{" "}
+            <span style={{ color: theme.palette.brightText }}>
+              ORCA Year on Transit
+            </span>{" "}
+            by uploading your card history.
+          </Typography>
+          <FileUpload
+            files={files}
+            onFilesChange={setFiles}
+            onClickContinue={() => void router.push("/wrapped")}
+            continueButtonDisabled={!hasStoredData}
           />
-          <CardContent>
-            <Typography paragraph>
-              ORCA Wrapped uses the CSV file of your tap history available at{" "}
-              <Link target="_blank" rel="noopener" href="https://myorca.com/">
-                myorca.com
-              </Link>
-              . You must have an ORCA account and your card(s) must be added to
-              "My ORCA Cards".
-              <br />
-              <strong>
-                Note: ORCA currently does not let riders see their history on
-                many employer-provided cards.
-              </strong>
-              If you are affected by this and you should be able to see your own
-              ORCA card history, we recommend filing a complaint with{" "}
-              <Link href="https://info.myorca.com/contact/">ORCA support</Link>.
-            </Typography>
-            <Typography paragraph>
-              To download the CSV, go to the My Cards page and click "Manage
-              this Card", then the "Card Activity" tab. At the bottom of the
-              activity, click the "Download CSV" button. Repeat this for each
-              card that you use regularly, ORCA wrapped will aggregate the data
-              from all of them.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
+          <OrcaQuestionBox>
+            Get your ORCA CSV file from{" "}
+            <Link href="https://myorca.com">myorca.com</Link>. Link your card
+            and then navigate to "Card Activity", then click the "Download CSV"
+            button to get your CSV.
+          </OrcaQuestionBox>
+        </Box>
+      </Container>
     </>
   );
 }

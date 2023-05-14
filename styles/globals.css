@@ -9,7 +9,6 @@ body {
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  background: #e1f0f1;
 }
 
 a {
@@ -19,6 +18,7 @@ a {
 
 * {
   box-sizing: border-box;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 #__next {

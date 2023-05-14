@@ -8,11 +8,12 @@ import useLocalStorageState from "use-local-storage-state";
 import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import React from "react";
+import useDarkMode from "use-dark-mode";
 
 import { UnprocessedOrcaCard } from "../src/types";
 import { AppContext, defaultAppState } from "../src/components/AppContext";
-import RainBackground from "../src/components/RainBackground";
 import { generateAppState } from "../src/processing_utils/processingUtils";
+import TopBarButtons from "../src/components/TopBarButtons";
 
 Bugsnag.start({
   apiKey: "04e95878207d41d2da7c5d058cc3e3be",
@@ -27,30 +28,24 @@ declare module "@mui/material/styles" {
       titleFont: string;
     };
   }
-  // allow configuration using `createTheme`
   interface ThemeOptions {
     fonts?: {
       titleFont?: string;
     };
   }
+
+  interface PaletteOptions {
+    backgroundSecondary: string;
+    brightText: string;
+  }
+  interface Palette {
+    backgroundSecondary: string;
+    brightText: string;
+  }
 }
 
-const theme = createTheme({
-  typography: {
-    fontFamily: ["Open Sans", "Helvetica"].join(","),
-    h3: {
-      fontSize: 36,
-      fontWeight: 700,
-    },
-  },
-  fonts: {
-    titleFont: ["IBM Plex Serif", "serif"].join(","),
-  },
-});
-
-theme.typography.h3.fontFamily = theme.fonts.titleFont;
-
 function MyApp({ Component, pageProps }): JSX.Element {
+  const { value: darkModeEnabled } = useDarkMode();
   const [unprocessedOrcaCards, setUnprocessedOrcaCards] =
     useLocalStorageState<UnprocessedOrcaCard[]>("orcaCsv");
 
@@ -58,6 +53,28 @@ function MyApp({ Component, pageProps }): JSX.Element {
     ? generateAppState(unprocessedOrcaCards)
     : defaultAppState;
 
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkModeEnabled ? "dark" : "light",
+          backgroundSecondary: darkModeEnabled ? "#4A4F5F" : "#E1F0F1",
+          brightText: "#E68F40",
+        },
+        typography: {
+          fontFamily: ["Open Sans", "Helvetica"].join(","),
+          h3: {
+            fontSize: 36,
+            fontWeight: 700,
+            fontFamily: ["IBM Plex Serif", "serif"].join(","),
+          },
+        },
+        fonts: {
+          titleFont: ["IBM Plex Serif", "serif"].join(","),
+        },
+      }),
+    [darkModeEnabled]
+  );
   return (
     <>
       <div
@@ -66,12 +83,14 @@ function MyApp({ Component, pageProps }): JSX.Element {
           flexDirection: "column",
           flex: "1 1 auto",
           zIndex: 2,
+          background: theme.palette.backgroundSecondary,
         }}
       >
         <ThemeProvider theme={theme}>
           <AppContext.Provider value={[appState, setUnprocessedOrcaCards]}>
             {ErrorBoundary ? (
               <ErrorBoundary>
+                <TopBarButtons />
                 <Component {...pageProps} />
               </ErrorBoundary>
             ) : (

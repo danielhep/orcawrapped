@@ -1,100 +1,48 @@
-import { JustifiedGrid } from "@egjs/react-grid";
-import { Box, Container } from "@mui/material";
-import { useAppState } from "../src/components/AppContext";
-import { motion, useScroll } from "framer-motion";
-
-import allStories from "../src/cards";
-import styled from "@emotion/styled";
-import CountUp from "react-countup";
-import { ExpandMore } from "@mui/icons-material";
-import { useRef } from "react";
-import Home1LineSection from "../src/components/Home1LineSection";
-import HomeTopRoute from "../src/components/HomeTopStation";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { Box, Container, Typography, useTheme } from "@mui/material";
+import OrcaQuestionBox from "../src/components/OrcaQuestionBox";
 import WrappedHeader from "../src/components/WrappedHeader";
 
-const BigText = styled.p`
-  color: white;
-  font-weight: 700;
-  font-size: 3em;
-  font-family: Arvo;
-  text-shadow: 2px 2px 0 black;
-`;
+export default function Wrapped(): JSX.Element {
+  const theme = useTheme();
 
-const SmallerText = styled.p`
-  color: white;
-  font-weight: 500;
-  font-size: 2em;
-  text-align: center;
-  font-family: Arvo;
-  text-shadow: 1px 1px 0 black;
-`;
-
-const DramaticText = styled.span`
-  font-weight: 900;
-  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black,
-    3px 3px 0 red;
-`;
-
-const ScrollingText = styled(motion.p)`
-  color: white;
-  font-weight: 500;
-  font-size: 2em;
-  text-align: center;
-  font-family: Arvo;
-  text-shadow: 1px 1px 0 black;
-`;
-
-export default function Wrapped(): JSX.Element | null {
-  const [appState] = useAppState();
-
-  if (!appState) return null;
-  const shownStories = allStories.filter((s) => s.test(appState));
   return (
     <>
       <WrappedHeader />
-      <Box
-        sx={{
-          minHeight: "100vh",
-          width: "100vw",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container sx={{ display: "flex", flexDirection: "column" }}>
-          <BigText>
-            <DramaticText>50 million:</DramaticText>
-            <br /> the number of taps recorded on the new ORCA system in 2022
-          </BigText>
-          <BigText>
-            Let{"'"}s see how your{" "}
-            <DramaticText>
-              <CountUp
-                duration={1}
-                end={appState.totalRowCount}
-                formattingFn={(n) => n.toLocaleString()}
-              />
-            </DramaticText>{" "}
-            boops broke down.
-          </BigText>
-          <SmallerText>Here is your year on transit.</SmallerText>
-          <ExpandMore
-            htmlColor="white"
-            sx={{ margin: "auto", display: "block", fontSize: 75 }}
-          />
-        </Container>
-      </Box>
-      <Home1LineSection />
-      <HomeTopRoute />
-
-      <Container>
-        <Grid2 container spacing={4}>
-          {shownStories.map((S, index) => (
-            <Grid2 key={`${S.cardName}-${index}`} xs={3}>
-              <S state={appState} />
-            </Grid2>
-          ))}
-        </Grid2>
+      <Container maxWidth="lg">
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "-100px" }}>
+          <OrcaQuestionBox>
+            ORCA Next Gen launched in May 2022. Some usage data is only
+            available for taps on the new ORCA readers.
+          </OrcaQuestionBox>
+        </Box>
+      </Container>
+      <Container maxWidth="md">
+        <Box
+          sx={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="p"
+            marginBottom={4}
+            marginTop={4}
+            color={theme.palette.text.primary}
+          >
+            In 2022, People made{" "}
+            <span style={{ color: theme.palette.brightText }}>1,000,000</span>{" "}
+            Trips on Puget Sound Transit Agencies.
+          </Typography>
+          <Typography
+            variant="h3"
+            component="p"
+            color={theme.palette.text.primary}
+          >
+            At least 1,203 of those were you!
+          </Typography>
+        </Box>
       </Container>
     </>
   );

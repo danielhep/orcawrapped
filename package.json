@@ -16,7 +16,6 @@
   "dependencies": {
     "@bugsnag/js": "^7.18.0",
     "@bugsnag/plugin-react": "^7.18.0",
-    "@dropzone-ui/react": "^6.7.20",
     "@egjs/grid": "^1.11.1",
     "@egjs/react-grid": "^1.12.1",
     "@emotion/babel-preset-css-prop": "^11.10.0",
@@ -24,6 +23,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
+    "@files-ui/react": "^1.0.8",
     "@fontsource/arvo": "^4.5.7",
     "@fontsource/ibm-plex-serif": "^4.5.12",
     "@fontsource/open-sans": "^4.5.13",
@@ -49,6 +49,7 @@
     "react-countup": "^6.4.0",
     "react-dom": "18.2.0",
     "typescript": "^4.9.4",
+    "use-dark-mode": "^2.3.1",
     "use-local-storage-state": "^18.1.2",
     "use-react-screenshot": "github:danielhep/use-react-screenshot"
   },

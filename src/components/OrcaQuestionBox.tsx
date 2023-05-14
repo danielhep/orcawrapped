@@ -1,6 +1,10 @@
 import { Box, Typography, useTheme } from "@mui/material";
 
-export default function OrcaQuestionBox() {
+export default function OrcaQuestionBox({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const theme = useTheme();
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -23,9 +27,11 @@ export default function OrcaQuestionBox() {
       >
         ?
       </Box>
-      <Typography sx={{ maxWidth: 400, fontSize: "24px" }}>
-        ORCA Next Gen launched in May 2022. Some usage data is only available
-        for taps on the new ORCA readers.
+      <Typography
+        sx={{ maxWidth: 400, fontSize: 18 }}
+        color={theme.palette.text.primary}
+      >
+        {children}
       </Typography>
     </Box>
   );
