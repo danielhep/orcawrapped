@@ -30,8 +30,8 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>ORCA Year in Transit</title>
-        <meta name="description" content="Get your ORCA year in transit!" />
+        <title>ORCA Year on Transit</title>
+        <meta name="description" content="Get your ORCA year on transit!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container maxWidth="sm">
