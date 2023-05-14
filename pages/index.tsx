@@ -37,7 +37,7 @@ export default function Index() {
       <Container maxWidth="sm">
         <Box
           sx={{
-            minHeight: "100vh",
+            minHeight: "calc(100vh - 36px)",
             width: "100%",
             display: "flex",
             flexDirection: "column",

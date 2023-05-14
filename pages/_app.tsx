@@ -14,6 +14,7 @@ import { UnprocessedOrcaCard } from "../src/types";
 import { AppContext, defaultAppState } from "../src/components/AppContext";
 import { generateAppState } from "../src/processing_utils/processingUtils";
 import TopBarButtons from "../src/components/TopBarButtons";
+import Footer from "../src/components/Footer";
 
 Bugsnag.start({
   apiKey: "04e95878207d41d2da7c5d058cc3e3be",
@@ -64,6 +65,11 @@ function MyApp({ Component, pageProps }): JSX.Element {
         typography: {
           fontFamily: ["Open Sans", "Helvetica"].join(","),
           h3: {
+            fontSize: 38,
+            fontWeight: 700,
+            fontFamily: ["IBM Plex Serif", "serif"].join(","),
+          },
+          h2: {
             fontSize: 36,
             fontWeight: 700,
             fontFamily: ["IBM Plex Serif", "serif"].join(","),
@@ -92,6 +98,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
               <ErrorBoundary>
                 <TopBarButtons />
                 <Component {...pageProps} />
+                <Footer />
               </ErrorBoundary>
             ) : (
               <Component {...pageProps} />
