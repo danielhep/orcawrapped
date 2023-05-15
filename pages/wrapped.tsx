@@ -1,10 +1,11 @@
 import { Box, Container, Typography, useTheme } from "@mui/material";
 import OrcaQuestionBox from "../src/components/OrcaQuestionBox";
 import WrappedHeader from "../src/components/WrappedHeader";
+import { useAppState } from "../src/components/AppContext";
 
 export default function Wrapped(): JSX.Element {
   const theme = useTheme();
-
+  const [appState] = useAppState();
   return (
     <>
       <WrappedHeader />
@@ -31,16 +32,20 @@ export default function Wrapped(): JSX.Element {
             marginTop={4}
             color={theme.palette.text.primary}
           >
-            In 2022, People made{" "}
+            Since ORCA NextGen launched, people have booped their cards{" "}
             <span style={{ color: theme.palette.brightText }}>1,000,000</span>{" "}
-            Trips on Puget Sound Transit Agencies.
+            times.
           </Typography>
           <Typography
             variant="h3"
             component="p"
             color={theme.palette.text.primary}
           >
-            At least 1,203 of those were you!
+            Here's how your{" "}
+            <span style={{ color: theme.palette.brightText }}>
+              {appState.totalRowCount}
+            </span>{" "}
+            boops broke down.
           </Typography>
         </Box>
       </Container>
