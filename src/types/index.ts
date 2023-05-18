@@ -129,6 +129,6 @@ export class OrcaTrip {
 
 export interface WrappedCard {
   cardName: string;
-  test: (state: AppState) => boolean;
+  score: (state: AppState) => number;
   ({ state }: { state: AppState }): JSX.Element;
 }

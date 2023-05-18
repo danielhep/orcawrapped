@@ -2,10 +2,17 @@ import { Box, Container, Typography, useTheme } from "@mui/material";
 import OrcaQuestionBox from "../src/components/OrcaQuestionBox";
 import WrappedHeader from "../src/components/WrappedHeader";
 import { useAppState } from "../src/components/AppContext";
+import allStories from "../src/cards";
+import dynamic from "next/dynamic";
+
+const Grid2 = dynamic(() => import("@mui/material/Unstable_Grid2/Grid2"), {
+  ssr: false,
+});
 
 export default function Wrapped(): JSX.Element {
   const theme = useTheme();
   const [appState] = useAppState();
+  const shownStories = allStories.sort((story) => story.score(appState));
   return (
     <>
       <WrappedHeader />
@@ -23,6 +30,7 @@ export default function Wrapped(): JSX.Element {
             textAlign: "center",
             display: "flex",
             flexDirection: "column",
+            alignItems: "stretch",
           }}
         >
           <Typography
@@ -33,7 +41,7 @@ export default function Wrapped(): JSX.Element {
             color={theme.palette.text.primary}
           >
             Since ORCA NextGen launched, people have booped their cards{" "}
-            <span style={{ color: theme.palette.brightText }}>1,000,000</span>{" "}
+            <span style={{ color: theme.palette.brightText }}>82,158,434</span>{" "}
             times.
           </Typography>
           <Typography
@@ -48,6 +56,15 @@ export default function Wrapped(): JSX.Element {
             boops broke down.
           </Typography>
         </Box>
+      </Container>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Grid2 container spacing={4} justifyContent="stretch">
+          {shownStories.map((Story, index) => (
+            <Grid2 key={`${Story.name}`} flexGrow={1}>
+              <Story state={appState} />
+            </Grid2>
+          ))}
+        </Grid2>
       </Container>
     </>
   );
