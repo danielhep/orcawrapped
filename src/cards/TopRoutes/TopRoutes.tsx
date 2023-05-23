@@ -17,7 +17,8 @@ export default function TopRoutes() {
   return (
     <OrcaCard ref={topLevelRef} sx={{ aspectRatio: "9/16" }}>
       <ResponsiveBar
-        data={sorted}
+        // Disable typescript for sorted
+        data={sorted as any}
         keys={["count"]}
         indexBy="routeShortName"
         layout="horizontal"
