@@ -1,13 +1,7 @@
+import dynamic from "next/dynamic";
 import { WrappedCard } from "../types";
-import FavoriteRoutes from "./TopRoutes";
+import TopRoutes from "./TopRoutes";
 
-const allStories: WrappedCard[] = [
-  FavoriteRoutes,
-  FavoriteRoutes,
-  FavoriteRoutes,
-  FavoriteRoutes,
-  FavoriteRoutes,
-  FavoriteRoutes,
-];
+const allStories: WrappedCard[] = [TopRoutes, TopRoutes, TopRoutes];
 
 export default allStories;

@@ -59,9 +59,9 @@ export default function Wrapped(): JSX.Element {
       </Container>
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Grid2 container spacing={4} justifyContent="stretch">
-          {shownStories.map((Story, index) => (
-            <Grid2 key={`${Story.name}`} flexGrow={1}>
-              <Story state={appState} />
+          {shownStories.map((story, index) => (
+            <Grid2 key={`${story.cardName}`} flexGrow={1}>
+              <story.Component />
             </Grid2>
           ))}
         </Grid2>
