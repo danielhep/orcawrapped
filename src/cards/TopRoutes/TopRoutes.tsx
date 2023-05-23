@@ -70,7 +70,7 @@ export default function TopRoutes() {
           modifiers: [["darker", 1.6]],
         }}
         role="application"
-        ariaLabel="Nivo bar chart demo"
+        ariaLabel="Top routes bar chart"
       />
     </OrcaCard>
   );
