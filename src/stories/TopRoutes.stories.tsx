@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ComponentStory, ComponentMeta, ArgTypes } from "@storybook/react";
 
-import TopRoutes from "../cards/TopRoutes";
+import TopRoutes from "../cards/TopRoutesold";
 import { argTypes, storyDecorator } from "./utils";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

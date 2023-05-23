@@ -1,95 +1,67 @@
-import { JustifiedGrid } from "@egjs/react-grid";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Typography, useTheme } from "@mui/material";
+import OrcaQuestionBox from "../src/components/OrcaQuestionBox";
+import WrappedHeader from "../src/components/WrappedHeader";
 import { useAppState } from "../src/components/AppContext";
-import { motion, useScroll } from "framer-motion";
-
 import allStories from "../src/cards";
-import styled from "@emotion/styled";
-import CountUp from "react-countup";
-import { ExpandMore } from "@mui/icons-material";
-import { useRef } from "react";
-import Home1LineSection from "../src/components/Home1LineSection";
-import HomeTopRoute from "../src/components/HomeTopStation";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import dynamic from "next/dynamic";
 
-const BigText = styled.p`
-  color: white;
-  font-weight: 700;
-  font-size: 3em;
-  font-family: Arvo;
-  text-shadow: 2px 2px 0 black;
-`;
+const Grid2 = dynamic(() => import("@mui/material/Unstable_Grid2/Grid2"), {
+  ssr: false,
+});
 
-const SmallerText = styled.p`
-  color: white;
-  font-weight: 500;
-  font-size: 2em;
-  text-align: center;
-  font-family: Arvo;
-  text-shadow: 1px 1px 0 black;
-`;
-
-const DramaticText = styled.span`
-  font-weight: 900;
-  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black,
-    3px 3px 0 red;
-`;
-
-const ScrollingText = styled(motion.p)`
-  color: white;
-  font-weight: 500;
-  font-size: 2em;
-  text-align: center;
-  font-family: Arvo;
-  text-shadow: 1px 1px 0 black;
-`;
-
-export default function Wrapped(): JSX.Element | null {
+export default function Wrapped(): JSX.Element {
+  const theme = useTheme();
   const [appState] = useAppState();
-
-  if (!appState) return null;
-  const shownStories = allStories.filter((s) => s.test(appState));
+  const shownStories = allStories.sort((story) => story.score(appState));
   return (
     <>
-      <Box
-        sx={{
-          minHeight: "100vh",
-          width: "100vw",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container sx={{ display: "flex", flexDirection: "column" }}>
-          <BigText>
-            <DramaticText>50 million:</DramaticText>
-            <br /> the number of taps recorded on the new ORCA system in 2022
-          </BigText>
-          <BigText>
-            Let{"'"}s see how your{" "}
-            <DramaticText>
-              <CountUp
-                duration={1}
-                end={appState.totalRowCount}
-                formattingFn={(n) => n.toLocaleString()}
-              />
-            </DramaticText>{" "}
+      <WrappedHeader />
+      <Container maxWidth="lg">
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "-100px" }}>
+          <OrcaQuestionBox>
+            ORCA Next Gen launched in May 2022. Some usage data is only
+            available for taps on the new ORCA readers.
+          </OrcaQuestionBox>
+        </Box>
+      </Container>
+      <Container maxWidth="md">
+        <Box
+          sx={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="p"
+            marginBottom={4}
+            marginTop={4}
+            color={theme.palette.text.primary}
+          >
+            Since ORCA NextGen launched, people have booped their cards{" "}
+            <span style={{ color: theme.palette.brightText }}>82,158,434</span>{" "}
+            times.
+          </Typography>
+          <Typography
+            variant="h3"
+            component="p"
+            color={theme.palette.text.primary}
+          >
+            Here's how your{" "}
+            <span style={{ color: theme.palette.brightText }}>
+              {appState.totalRowCount}
+            </span>{" "}
             boops broke down.
-          </BigText>
-          <SmallerText>Here is your year on transit.</SmallerText>
-          <ExpandMore
-            htmlColor="white"
-            sx={{ margin: "auto", display: "block", fontSize: 75 }}
-          />
-        </Container>
-      </Box>
-      <Home1LineSection />
-      <HomeTopRoute />
-
-      <Container>
-        <Grid2 container spacing={4}>
-          {shownStories.map((S, index) => (
-            <Grid2 key={`${S.cardName}-${index}`} xs={3}>
-              <S state={appState} />
+          </Typography>
+        </Box>
+      </Container>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Grid2 container spacing={4} justifyContent="stretch">
+          {shownStories.map((story, index) => (
+            <Grid2 key={`${story.cardName}`} flexGrow={1}>
+              <story.Component />
             </Grid2>
           ))}
         </Grid2>

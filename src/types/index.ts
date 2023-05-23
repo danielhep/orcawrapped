@@ -1,3 +1,5 @@
+import { ComponentType } from "react";
+
 export interface ProcessedOrcaCard {
   fileName: string;
   processed: ProcessedOrcaRow[];
@@ -129,6 +131,6 @@ export class OrcaTrip {
 
 export interface WrappedCard {
   cardName: string;
-  test: (state: AppState) => boolean;
-  ({ state }: { state: AppState }): JSX.Element;
+  score: (state: AppState) => number;
+  Component: ComponentType;
 }

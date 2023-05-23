@@ -17,6 +17,10 @@ import { linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 
+function isFile(file: any): file is File {
+  return file instanceof File;
+}
+
 /**
  * @param file File or string containing CSV
  * @returns Parsed Array<OrcaCSVRow>
@@ -301,9 +305,10 @@ export function generateAppState(
 }
 
 export async function parseOrcaFiles(
-  files: File[]
+  files: (File | undefined)[]
 ): Promise<UnprocessedOrcaCard[]> {
-  return await Promise.all(files.map(parseFile));
+  const filteredFiles = files.filter(isFile);
+  return await Promise.all(filteredFiles.map(parseFile));
 }
 
 export function parseOrcaFileCsvSync(
