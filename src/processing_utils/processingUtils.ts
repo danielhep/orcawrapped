@@ -1,4 +1,4 @@
-import { parse, previousDay } from "date-fns";
+import { differenceInMilliseconds, parse, previousDay } from "date-fns";
 import Papa from "papaparse";
 import Bugsnag from "@bugsnag/js";
 import {
@@ -13,8 +13,14 @@ import {
   LinkStats,
   LinkStationStats,
   IndividualAgencyOccurences,
+  DayRideCount,
 } from "../types";
-import { agencyOccurrences, linkStats, routeOccurrences } from "./basicStats";
+import {
+  agencyOccurrences,
+  linkStats,
+  ridesByDate,
+  routeOccurrences,
+} from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 
@@ -193,9 +199,16 @@ function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
 
 function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
   const trips = findTripsFromTaps(data);
+  const firstTrip = trips[0];
+  const lastTrip = trips[trips.length - 1];
+  const interval = {
+    start: firstTrip.boarding.time,
+    end: lastTrip.boarding.time,
+  };
   return {
     routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
     agencyOccurrences: agencyOccurrences(trips.map((t) => t.boarding)),
+    ridesByDate: ridesByDate(trips, interval),
     trips: trips,
     tapOffBehavior: {
       expected: trips.filter((t) => t.expectsTapOff).length,
@@ -266,6 +279,19 @@ function aggregateExtraDataObjects(
       return prev;
     }, []);
 
+  const ridesByDate = extraDataObjects
+    .flatMap((edo) => edo.ridesByDate)
+    .reduce<DayRideCount[]>((prev, cur) => {
+      const indexOfMatch = prev.findIndex((p) => p.day === cur.day);
+      if (indexOfMatch !== -1) {
+        prev[indexOfMatch].value += cur.value;
+      } else {
+        prev.push(cur);
+      }
+      return prev;
+    }, [])
+    .sort((a, b) => differenceInMilliseconds(a.jsDate, b.jsDate));
+
   const trips = extraDataObjects.flatMap((edo) => edo.trips);
   const tapOffBehavior = extraDataObjects
     .map((edo) => edo.tapOffBehavior)
@@ -297,6 +323,7 @@ function aggregateExtraDataObjects(
   return {
     routeOccurrences,
     agencyOccurrences,
+    ridesByDate,
     trips,
     tapOffBehavior,
     linkStats,

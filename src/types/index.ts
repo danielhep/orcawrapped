@@ -64,9 +64,16 @@ export interface IndividualRouteOccurrences {
   routeShortName?: string;
 }
 
+export interface DayRideCount {
+  day: string;
+  jsDate: Date;
+  value: number;
+}
+
 export interface ExtraDataType {
   routeOccurrences: Array<IndividualRouteOccurrences>;
   agencyOccurrences: Array<IndividualAgencyOccurences>;
+  ridesByDate: Array<DayRideCount>;
   trips: OrcaTrip[];
   tapOffBehavior: {
     expected: number;

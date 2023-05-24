@@ -1,4 +1,12 @@
 import {
+  Interval,
+  differenceInMilliseconds,
+  eachDayOfInterval,
+  formatISO,
+  isSameDay,
+} from "date-fns";
+import {
+  DayRideCount,
   DoorSides,
   IndividualAgencyOccurences,
   LinkStats,
@@ -27,6 +35,18 @@ const LINK_DOOR_SIDE: Record<string, DoorSides> = {
   "seatac/airport": "LEFT",
   "angle lake": "EITHER",
 };
+
+export function ridesByDate(
+  data: OrcaTrip[],
+  interval: Interval
+): Array<DayRideCount> {
+  const everyDay = eachDayOfInterval(interval);
+  return everyDay.map((date) => ({
+    value: data.filter((d) => isSameDay(d.boarding.time, date)).length,
+    day: formatISO(date, { representation: "date" }),
+    jsDate: date,
+  }));
+}
 
 export function agencyOccurrences(
   data: ProcessedOrcaRow[]

@@ -31,6 +31,7 @@
     "@mui/material": "^5.13.0",
     "@next/font": "^13.4.2",
     "@nivo/bar": "^0.83.0",
+    "@nivo/calendar": "^0.83.0",
     "@nivo/core": "^0.83.0",
     "@nivo/pie": "^0.83.0",
     "@nivo/waffle": "^0.83.0",
