@@ -4,6 +4,8 @@ import { AppState, UnprocessedOrcaCard } from "../types";
 export const defaultAppState: AppState = {
   orcaData: [],
   aggregateExtraData: {
+    agencyOccurrences: [],
+    ridesByDate: [],
     routeOccurrences: [],
     trips: [],
     tapOffBehavior: {
