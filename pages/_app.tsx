@@ -64,6 +64,11 @@ function MyApp({ Component, pageProps }): JSX.Element {
         },
         typography: {
           fontFamily: ["Open Sans", "Helvetica"].join(","),
+          h4: {
+            fontSize: 34,
+            fontWeight: 600,
+            fontFamily: ["Open Sans", "Helvetica"].join(","),
+          },
           h3: {
             fontSize: 38,
             fontWeight: 700,

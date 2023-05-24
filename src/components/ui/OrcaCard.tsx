@@ -6,6 +6,7 @@ const OrcaCard = styled(Paper)<{ dark?: boolean }>`
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  max-width: 350px;
 `;
 
 export default OrcaCard;
