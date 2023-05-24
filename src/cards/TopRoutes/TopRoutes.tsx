@@ -90,7 +90,7 @@ export default function TopRoutes() {
               tickRotation: 0,
               legendPosition: "middle",
               legendOffset: 32,
-              tickValues: 4,
+              tickValues: 5,
             }}
             labelSkipWidth={12}
             labelSkipHeight={12}
