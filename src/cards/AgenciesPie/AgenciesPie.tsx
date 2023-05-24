@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import OrcaCard from "../../components/ui/OrcaCard";
 import { useSize } from "ahooks";
-import { ResponsiveWaffle } from "@nivo/waffle";
+import { ResponsivePie } from "@nivo/pie";
 import { useAppState } from "../../components/AppContext";
 import { linearGradientDef } from "@nivo/core";
 import { Box, Typography, useTheme } from "@mui/material";
@@ -49,24 +49,27 @@ export default function TopRoutes() {
       >
         {/* hacky hack hack to make the svg not grow infinitely */}
         <Box height="99%" position="relative">
-          <ResponsiveWaffle
+          <ResponsivePie
             // Disable typescript for sorted
             data={agencyOccurrences as any}
-            rows={24}
-            total={totalOccurrences}
-            columns={14}
-            padding={1}
+            innerRadius={0.5}
+            padAngle={0.7}
+            cornerRadius={3}
+            margin={{ top: 10, bottom: 10, right: 20, left: 20 }}
+            activeOuterRadiusOffset={8}
+            borderWidth={1}
             colors={{ scheme: "pastel2" }}
             theme={{
               textColor: textColor,
-              fontSize: 16,
+              fontSize: 12,
               tooltip: {
                 container: { background: theme.palette.background.default },
               },
             }}
-            borderRadius={2}
             role="application"
-            ariaLabel="Top routes bar chart"
+            enableArcLinkLabels={false}
+            arcLabel="id"
+            arcLabelsSkipAngle={20}
           />
         </Box>
       </Box>

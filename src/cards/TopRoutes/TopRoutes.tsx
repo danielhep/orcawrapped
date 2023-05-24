@@ -55,10 +55,6 @@ export default function TopRoutes() {
             colors={{ scheme: "pastel2" }}
             layout="horizontal"
             margin={{ top: 5, right: 5, bottom: 50, left: 80 }}
-            borderColor={{
-              from: "color",
-              modifiers: [["darker", 1.6]],
-            }}
             enableLabel={false}
             defs={[
               linearGradientDef(
@@ -82,6 +78,10 @@ export default function TopRoutes() {
               tooltip: {
                 container: { background: theme.palette.background.default },
               },
+            }}
+            borderColor={{
+              from: "color",
+              modifiers: [["darker", 0.2]],
             }}
             borderRadius={5}
             axisBottom={{
