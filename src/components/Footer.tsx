@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography, Link as MuiLink } from "@mui/material";
 import Link from "next/link";
 
 export default function Footer() {
@@ -11,10 +11,20 @@ export default function Footer() {
         display: "flex",
         alignContent: "space-around",
         justifyContent: "center",
-        height: 36,
+        alignItems: "center",
+        gap: 4,
+        height: 48,
       }}
     >
-      <Link href="/credits">Credits</Link>
+      <Link href="/credits" passHref legacyBehavior>
+        <MuiLink>Credits</MuiLink>
+      </Link>
+      <Link href="https://ko-fi.com/danielhep" passHref legacyBehavior>
+        <MuiLink>Buy me a Coffee</MuiLink>
+      </Link>
+      <Typography>
+        ORCA Wrapped is not affiliated with ORCA agencies.
+      </Typography>
     </Box>
   );
 }

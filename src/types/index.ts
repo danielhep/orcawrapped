@@ -52,6 +52,11 @@ export interface ProcessedOrcaRow {
   declined: boolean;
 }
 
+export interface IndividualAgencyOccurences {
+  agency: string;
+  count: number;
+}
+
 export interface IndividualRouteOccurrences {
   line: string | undefined;
   count: number;
@@ -61,6 +66,7 @@ export interface IndividualRouteOccurrences {
 
 export interface ExtraDataType {
   routeOccurrences: Array<IndividualRouteOccurrences>;
+  agencyOccurrences: Array<IndividualAgencyOccurences>;
   trips: OrcaTrip[];
   tapOffBehavior: {
     expected: number;

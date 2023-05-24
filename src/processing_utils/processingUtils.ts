@@ -12,8 +12,9 @@ import {
   IndividualRouteOccurrences,
   LinkStats,
   LinkStationStats,
+  IndividualAgencyOccurences,
 } from "../types";
-import { linkStats, routeOccurrences } from "./basicStats";
+import { agencyOccurrences, linkStats, routeOccurrences } from "./basicStats";
 import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 
@@ -194,6 +195,7 @@ function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
   const trips = findTripsFromTaps(data);
   return {
     routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
+    agencyOccurrences: agencyOccurrences(trips.map((t) => t.boarding)),
     trips: trips,
     tapOffBehavior: {
       expected: trips.filter((t) => t.expectsTapOff).length,
@@ -251,6 +253,19 @@ function aggregateExtraDataObjects(
       }
       return prev;
     }, []);
+
+  const agencyOccurrences = extraDataObjects
+    .flatMap((edo) => edo.agencyOccurrences)
+    .reduce<IndividualAgencyOccurences[]>((prev, cur) => {
+      const indexOfMatch = prev.findIndex((p) => p.agency === cur.agency);
+      if (indexOfMatch !== -1) {
+        prev[indexOfMatch].count += cur.count;
+      } else {
+        prev.push(cur);
+      }
+      return prev;
+    }, []);
+
   const trips = extraDataObjects.flatMap((edo) => edo.trips);
   const tapOffBehavior = extraDataObjects
     .map((edo) => edo.tapOffBehavior)
@@ -281,6 +296,7 @@ function aggregateExtraDataObjects(
   };
   return {
     routeOccurrences,
+    agencyOccurrences,
     trips,
     tapOffBehavior,
     linkStats,

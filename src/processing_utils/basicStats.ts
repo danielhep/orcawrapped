@@ -1,4 +1,10 @@
-import { DoorSides, LinkStats, OrcaTrip, ProcessedOrcaRow } from "../types";
+import {
+  DoorSides,
+  IndividualAgencyOccurences,
+  LinkStats,
+  OrcaTrip,
+  ProcessedOrcaRow,
+} from "../types";
 
 const LINK_DOOR_SIDE: Record<string, DoorSides> = {
   northgate: "EITHER",
@@ -21,6 +27,25 @@ const LINK_DOOR_SIDE: Record<string, DoorSides> = {
   "seatac/airport": "LEFT",
   "angle lake": "EITHER",
 };
+
+export function agencyOccurrences(
+  data: ProcessedOrcaRow[]
+): Array<IndividualAgencyOccurences> {
+  const dataAsDict = data.reduce<Record<string, number>>((prev, cur) => {
+    if (prev[cur.agency]) {
+      prev[cur.agency]++;
+    } else {
+      prev[cur.agency] = 1;
+    }
+    return prev;
+  }, {});
+  return Object.keys(dataAsDict)
+    .map((agency) => ({
+      agency,
+      count: dataAsDict[agency],
+    }))
+    .sort((a, b) => b.count - a.count);
+}
 
 export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
   line: string | undefined;
