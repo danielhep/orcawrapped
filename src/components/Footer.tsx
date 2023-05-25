@@ -14,7 +14,8 @@ export default function Footer() {
         justifyContent: "center",
         alignItems: "center",
         gap: 4,
-        height: 48,
+        height: { md: 48 },
+        pt: { xs: 4, md: 0 },
       }}
     >
       <Link href="/credits" passHref legacyBehavior>
