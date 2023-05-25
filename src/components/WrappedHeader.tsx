@@ -12,7 +12,7 @@ export default function WrappedHeader() {
       sx={{
         background: theme.palette.background.default,
         borderBottom: "5px dashed #68A2B7",
-        marginBottom: "161px",
+        marginBottom: { md: "161px", xs: "24px" },
       }}
     >
       <Container
@@ -54,13 +54,31 @@ export default function WrappedHeader() {
         >
           ORCA Year in Review
         </Typography>
-        <Box sx={{ alignSelf: "flex-start" }}>
+      </Container>
+      <Container
+        maxWidth="lg"
+        sx={{
+          flexDirection: "column",
+          alignContent: "flex-end",
+          alignItems: "flex-end",
+          display: "flex",
+          pt: 10,
+          p: 0,
+        }}
+      >
+        <Box
+          sx={{
+            alignSelf: { md: "flex-start" },
+            marginBottom: { md: "-161px", sm: 0 },
+            marginTop: { md: "-50px", sm: 0 },
+          }}
+        >
           <Image
-            src="/cute_train.svg"
+            src="/cute_train_crop.svg"
             alt="cute drawing of Link train"
             width={626}
             height={323}
-            style={{ marginBottom: "-161px", marginTop: "-50px" }}
+            style={{}}
           />
         </Box>
       </Container>

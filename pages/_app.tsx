@@ -9,6 +9,7 @@ import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import React from "react";
 import useDarkMode from "use-dark-mode";
+import { Analytics } from "@vercel/analytics/react";
 
 import { UnprocessedOrcaCard } from "../src/types";
 import { AppContext, defaultAppState } from "../src/components/AppContext";
@@ -104,6 +105,7 @@ function MyApp({ Component, pageProps }): JSX.Element {
                 <TopBarButtons />
                 <Component {...pageProps} />
                 <Footer />
+                <Analytics />
               </ErrorBoundary>
             ) : (
               <Component {...pageProps} />

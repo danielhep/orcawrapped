@@ -17,7 +17,13 @@ export default function Wrapped(): JSX.Element {
     <>
       <WrappedHeader />
       <Container maxWidth="lg">
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "-100px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            mt: { md: "-100px", sm: 0 },
+          }}
+        >
           <OrcaQuestionBox>
             This website is a work in progress! More stats are being added soon.
           </OrcaQuestionBox>

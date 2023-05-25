@@ -16,23 +16,21 @@ import { ActivityType } from "../../types";
 
 const Statistic = ({ title, body }) => {
   return (
-    <ListItem>
-      <ListItemText
-        primary={title}
-        secondary={
-          <>
-            <Typography
-              sx={{ display: "inline" }}
-              component="span"
-              variant="body2"
-              color="text.primary"
-            >
-              {body}
-            </Typography>
-            {" - sum of all transactions excluding loads"}
-          </>
-        }
-      />
+    <ListItem disablePadding sx={{ display: "flex", alignItems: "stretch" }}>
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          borderRadius: 2,
+          border: "1px solid #999",
+          p: 2,
+          width: "100%",
+        }}
+      >
+        <Box sx={{ color: "text.secondary" }}>{title}</Box>
+        <Box sx={{ color: "text.primary", fontSize: 34, fontWeight: "medium" }}>
+          {body}
+        </Box>
+      </Box>
     </ListItem>
   );
 };
