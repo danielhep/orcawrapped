@@ -16,6 +16,7 @@ export default function Credits() {
         sx={{
           mt: 10,
           display: "flex",
+          flexDirection: { md: "row", xs: "column" },
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -62,7 +63,7 @@ export default function Credits() {
           sx={{
             display: "grid",
             width: "100%",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: { md: "repeat(3, 1fr)" },
             gap: 4,
           }}
         >
