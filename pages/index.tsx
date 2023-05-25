@@ -75,7 +75,8 @@ export default function Index() {
             Get your ORCA CSV file from{" "}
             <Link href="https://myorca.com">myorca.com</Link>. Link your card
             and then navigate to "Card Activity", then click the "Download CSV"
-            button to get your CSV.
+            button to get your CSV. You can upload multiple cards at once and
+            they will be combined.
           </OrcaQuestionBox>
         </Box>
       </Container>
