@@ -32,7 +32,7 @@ export default function Credits() {
             color: theme.palette.text.primary,
           }}
         >
-          Year on Transit Credits
+          ORCA Boop Report Credits
         </Typography>
       </Box>
       <Container
@@ -54,9 +54,9 @@ export default function Credits() {
             color: theme.palette.text.primary,
           }}
         >
-          ORCA Year on Transit is not affiliated with ORCA or any ORCA
-          affiliated agency. It is a project by Daniel Heppner with help by the
-          following people and libraries.
+          ORCA Boop Report is not affiliated with ORCA or any ORCA affiliated
+          agency. It is a project by Daniel Heppner with help by the following
+          people and libraries.
         </Typography>
         <Box
           sx={{

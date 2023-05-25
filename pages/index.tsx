@@ -30,8 +30,8 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>ORCA Year on Transit</title>
-        <meta name="description" content="Get your ORCA year on transit!" />
+        <title>ORCA Boop Report</title>
+        <meta name="description" content="Get your ORCA boop report!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container maxWidth="sm">
@@ -57,7 +57,7 @@ export default function Index() {
           >
             See your{" "}
             <span style={{ color: theme.palette.brightText }}>
-              ORCA Year on Transit
+              ORCA Boop Report
             </span>{" "}
             by uploading your card history.
           </Typography>
