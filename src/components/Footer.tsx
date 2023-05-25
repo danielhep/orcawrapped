@@ -9,6 +9,7 @@ export default function Footer() {
         top: "100vh",
         position: "sticky",
         display: "flex",
+        flexDirection: { md: "row", xs: "column" },
         alignContent: "space-around",
         justifyContent: "center",
         alignItems: "center",
@@ -23,7 +24,7 @@ export default function Footer() {
         <MuiLink>Buy me a Coffee</MuiLink>
       </Link>
       <Typography>
-        ORCA Wrapped is not affiliated with ORCA agencies.
+        ORCA Boop Report is not affiliated with ORCA agencies.
       </Typography>
     </Box>
   );
