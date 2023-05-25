@@ -61,6 +61,10 @@ export default function Index() {
             </span>{" "}
             by uploading your card history.
           </Typography>
+          <Typography textAlign={"center"}>
+            All ORCA card data is processed on your computer, there is no server
+            that receives your tap history.
+          </Typography>
           <FileUpload
             files={files}
             onFilesChange={setFiles}
