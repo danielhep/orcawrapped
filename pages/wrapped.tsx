@@ -19,8 +19,7 @@ export default function Wrapped(): JSX.Element {
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: "-100px" }}>
           <OrcaQuestionBox>
-            ORCA Next Gen launched in May 2022. Some usage data is only
-            available for taps on the new ORCA readers.
+            This website is a work in progress! More stats are being added soon.
           </OrcaQuestionBox>
         </Box>
       </Container>
