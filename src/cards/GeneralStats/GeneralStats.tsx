@@ -4,19 +4,15 @@ import { useSize } from "ahooks";
 import { Bar, ResponsiveBar } from "@nivo/bar";
 import { useAppState } from "../../components/AppContext";
 import { linearGradientDef } from "@nivo/core";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, List, ListItem, Typography, useTheme } from "@mui/material";
 import { ActivityType } from "../../types";
 
 const Statistic = ({ title, body }) => {
   return (
-    <ListItem disablePadding sx={{ display: "flex", alignItems: "stretch" }}>
+    <ListItem
+      disablePadding
+      sx={{ display: "flex", alignItems: "stretch", mb: 2 }}
+    >
       <Box
         sx={{
           bgcolor: "background.paper",
@@ -39,8 +35,6 @@ export default function TopRoutes() {
   const topLevelRef = useRef(null);
   const theme = useTheme();
   const boxRef = useRef(null);
-  const size = useSize(boxRef);
-  const textColor = theme.palette.text.primary;
   const [appState] = useAppState();
   const totalCost = appState.orcaData
     .flatMap((od) => od.processed)
@@ -52,7 +46,8 @@ export default function TopRoutes() {
     style: "currency",
     currency: "USD",
   });
-  console.log(totalCostHuman);
+  const missedTapOffs = appState.aggregateExtraData.tapOffBehavior.missing;
+  console.log(missedTapOffs);
   return (
     <OrcaCard
       ref={topLevelRef}
@@ -83,6 +78,7 @@ export default function TopRoutes() {
             title={"Total amount spent on transit"}
             body={`${totalCostHuman}`}
           />
+          <Statistic title={"Missed tap offs"} body={`${missedTapOffs}`} />
         </List>
       </Box>
     </OrcaCard>
