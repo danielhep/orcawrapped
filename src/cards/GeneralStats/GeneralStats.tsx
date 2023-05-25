@@ -47,7 +47,11 @@ export default function TopRoutes() {
     currency: "USD",
   });
   const missedTapOffs = appState.aggregateExtraData.tapOffBehavior.missing;
-  console.log(missedTapOffs);
+  const topLinkStation =
+    appState.aggregateExtraData.linkStats.stationStats.sort(
+      (a, b) => b.count - a.count
+    )[0].station;
+
   return (
     <OrcaCard
       ref={topLevelRef}
@@ -79,6 +83,7 @@ export default function TopRoutes() {
             body={`${totalCostHuman}`}
           />
           <Statistic title={"Missed tap offs"} body={`${missedTapOffs}`} />
+          <Statistic title={"Top Link Station"} body={`${topLinkStation}`} />
         </List>
       </Box>
     </OrcaCard>
